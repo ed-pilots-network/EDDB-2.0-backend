@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="add_commodity_cover_indexes" author="daniel-j-mason">
+        <createIndex tableName="latest_market_datum" indexName="latest_market_datum_compound_buy_market_index">
+            <column>station_id</column>
+            <column>commodity_id</column>
+            <column>timestamp</column>
+            <column>buy_price</column>
+            <column>stock</column>
+        </createIndex>
+        <createIndex tableName="latest_market_datum" indexName="latest_market_datum_compound_sell_market_index">
+            <column>station_id</column>
+            <column>commodity_id</column>
+            <column>timestamp</column>
+            <column>sell_price</column>
+            <column>demand</column>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
