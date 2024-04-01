@@ -143,4 +143,99 @@ class MybatisStationEntityMapperTest {
         assertThat(result.getHorizons(), equalTo(station.horizons()));
         assertThat(result.getUpdatedAt(), equalTo(station.updatedAt()));
     }
+    @Test
+    public void testMap_givenStation_withEmptyLandingPads() {
+        UUID stationId = UUID.randomUUID();
+        System system = mock(System.class);
+        MybatisSystemEntity systemEntity = mock(MybatisSystemEntity.class);
+        when(systemEntityMapper.map(any(System.class))).thenReturn(systemEntity);
+        Map<String, Integer> expectedLandingPadSizes = null;
+
+        Station station = new Station(
+                stationId,
+                123L,
+                "stationName",
+                "Corriolis",
+                1000.0,
+                system,
+                Map.of(),
+                Map.of(
+                        "economy1", 0.1,
+                        "economy2", 0.9
+                ),
+                List.of("service1", "service2"),
+                "economy2",
+                "government",
+                true,
+                true,
+                LocalDateTime.of(2020, 1, 1, 0, 0, 0)
+        );
+
+
+        MybatisStationEntity result = underTest.map(station);
+
+
+        assertThat(result.getId(), equalTo(station.id()));
+        assertThat(result.getMarketId(), equalTo(station.marketId()));
+        assertThat(result.getName(), equalTo(station.name()));
+        assertThat(result.getType(), equalTo(station.type()));
+        assertThat(result.getDistanceFromStar(), equalTo(station.distanceFromStar()));
+        assertThat(result.getSystem(), equalTo(systemEntity));
+        assertThat(result.getLandingPads(), equalTo(expectedLandingPadSizes));
+        assertThat(result.getEconomies(), equalTo(station.economies()));
+        assertThat(result.getServices(), equalTo(station.services()));
+        assertThat(result.getEconomy(), equalTo(station.economy()));
+        assertThat(result.getGovernment(), equalTo(station.government()));
+        assertThat(result.getOdyssey(), equalTo(station.odyssey()));
+        assertThat(result.getHorizons(), equalTo(station.horizons()));
+        assertThat(result.getUpdatedAt(), equalTo(station.updatedAt()));
+    }
+
+    @Test
+    public void testMap_givenStation_withNullLandingPads() {
+        UUID stationId = UUID.randomUUID();
+        System system = mock(System.class);
+        MybatisSystemEntity systemEntity = mock(MybatisSystemEntity.class);
+        when(systemEntityMapper.map(any(System.class))).thenReturn(systemEntity);
+        Map<String, Integer> expectedLandingPadSizes = null;
+
+        Station station = new Station(
+                stationId,
+                123L,
+                "stationName",
+                "Corriolis",
+                1000.0,
+                system,
+                null,
+                Map.of(
+                        "economy1", 0.1,
+                        "economy2", 0.9
+                ),
+                List.of("service1", "service2"),
+                "economy2",
+                "government",
+                true,
+                true,
+                LocalDateTime.of(2020, 1, 1, 0, 0, 0)
+        );
+
+
+        MybatisStationEntity result = underTest.map(station);
+
+
+        assertThat(result.getId(), equalTo(station.id()));
+        assertThat(result.getMarketId(), equalTo(station.marketId()));
+        assertThat(result.getName(), equalTo(station.name()));
+        assertThat(result.getType(), equalTo(station.type()));
+        assertThat(result.getDistanceFromStar(), equalTo(station.distanceFromStar()));
+        assertThat(result.getSystem(), equalTo(systemEntity));
+        assertThat(result.getLandingPads(), equalTo(expectedLandingPadSizes));
+        assertThat(result.getEconomies(), equalTo(station.economies()));
+        assertThat(result.getServices(), equalTo(station.services()));
+        assertThat(result.getEconomy(), equalTo(station.economy()));
+        assertThat(result.getGovernment(), equalTo(station.government()));
+        assertThat(result.getOdyssey(), equalTo(station.odyssey()));
+        assertThat(result.getHorizons(), equalTo(station.horizons()));
+        assertThat(result.getUpdatedAt(), equalTo(station.updatedAt()));
+    }
 }

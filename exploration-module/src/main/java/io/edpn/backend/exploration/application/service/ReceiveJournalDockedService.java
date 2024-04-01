@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
@@ -65,11 +66,12 @@ public class ReceiveJournalDockedService implements ReceiveKafkaMessageUseCase<D
     }
 
     private Map<LandingPadSize, Integer> landingPadSizeFromPayload(DockedMessage.V1.Payload payload) {
-        return Map.of(
-                LandingPadSize.LARGE, payload.landingPads().large(),
-                LandingPadSize.MEDIUM, payload.landingPads().medium(),
-                LandingPadSize.SMALL, payload.landingPads().small()
-        );
+        return Optional.ofNullable(payload.landingPads())
+                .map(landingPads -> Map.of(
+                        LandingPadSize.LARGE, landingPads.large(),
+                        LandingPadSize.MEDIUM, landingPads.medium(),
+                        LandingPadSize.SMALL, landingPads.small()
+                )).orElse(null);
     }
 
     private Map<String, Double> stationEconomiesFromPayload(DockedMessage.V1.Payload payload) {

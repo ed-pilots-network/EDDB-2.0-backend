@@ -16,10 +16,16 @@ public class MybatisStationEntityMapper {
     private final MybatisSystemEntityMapper systemEntityMapper;
 
     private static Map<String, Integer> getLandingPads(Station station) {
-        return LandingPadSize.KNOWN_LANDING_PAD_SIZES.stream()
-                .collect(Collectors.toMap(
-                        LandingPadSize::name,
-                        landingPadSize -> station.landingPads().getOrDefault(landingPadSize, 0)));
+        return Optional.ofNullable(station.landingPads())
+                .flatMap(MybatisStationEntityMapper::filterLandingPads)
+                .orElse(null);
+    }
+
+    private static Optional<Map<String, Integer>> filterLandingPads(Map<LandingPadSize, Integer> landingPads) {
+        Map<String, Integer> filteredLandingPadsMap = landingPads.entrySet().stream()
+                .filter(entry -> LandingPadSize.KNOWN_LANDING_PAD_SIZES.contains(entry.getKey()))
+                .collect(Collectors.toMap(entry -> entry.getKey().name(), Map.Entry::getValue));
+        return filteredLandingPadsMap.isEmpty() ? Optional.empty() : Optional.of(filteredLandingPadsMap);
     }
 
     private static Map<LandingPadSize, Integer> getLandingPads(MybatisStationEntity stationEntity) {

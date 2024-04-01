@@ -3,16 +3,16 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="create_validated_commodity_view" author="daniel-j-mason" runAlways="true">
+    <changeSet id="create_validated_commodity_view" author="daniel-j-mason" runOnChange="true" runAlways="true">
         <createView viewName="validated_commodity_view" replaceIfExists="true">
             <![CDATA[
             SELECT c.id,
-                   cw.technical_name,
-                   cw.display_name,
-                   cw.type,
-                   cw.is_rare
-            FROM commodity_whitelist cw
-                     INNER JOIN commodity c ON c.name = cw.technical_name
+                   c.technical_name,
+                   c.display_name,
+                   c.type,
+                   c.is_rare
+            FROM commodity c
+            WHERE is_rare IS NOT NULL
             ORDER BY technical_name;
             ]]>
         </createView>

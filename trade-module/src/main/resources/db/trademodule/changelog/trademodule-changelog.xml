@@ -34,6 +34,8 @@
     <include file="/db/trademodule/changelog/add_unique_index_commodity_name.xml"/>
     <include file="/db/trademodule/changelog/add_latest_market_datum_demand_supply_price_indexes.xml"/>
     <include file="/db/trademodule/changelog/add_station_arrival_distance_index.xml"/>
+    <include file="/db/trademodule/changelog/add_commodity_combined_columns.xml"/>
+    <include file="/db/trademodule/changelog/fill_commodity_combined_table.xml"/>
     <include file="/db/trademodule/changelog/add_commodity_cover_index.xml"/>
     <include file="/db/trademodule/changelog/add_latest_market_datum_cover_indexes.xml"/>
 

@@ -88,6 +88,8 @@ class ReceiveCommodityMessageUseCaseTest {
                 new CommodityMessage.V3.Payload(
                         "system",
                         "station",
+                        null,
+                        null,
                         123456L,
                         true,
                         true,

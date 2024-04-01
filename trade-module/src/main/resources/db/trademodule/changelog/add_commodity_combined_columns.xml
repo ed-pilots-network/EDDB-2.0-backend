@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="add_commodity_combined_columns" author="pveeckhout">
+        <renameColumn tableName="commodity"
+                      oldColumnName="name"
+                      newColumnName="technical_name"
+                      columnDataType="varchar(255)"/>
+
+        <addColumn tableName="commodity">
+            <column name="display_name" type="varchar(255)"/>
+            <column name="type" type="varchar(255)"/>
+            <column name="is_rare" type="boolean"/>
+        </addColumn>
+
+        <createIndex indexName="idx_commodity_is_rare" tableName="commodity">
+            <column name="is_rare"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

@@ -103,7 +103,7 @@ subprojects {
         prometheusVersion = '1.11.1'
         backendUtilVersion = '0.2.0-SNAPSHOT'
         backendMybatisUtilVersion = '0.0.4-SNAPSHOT'
-        backendMessageProcessorLibVersion = '1.0.0-SNAPSHOT'
+        backendMessageProcessorLibVersion = '1.0.2-SNAPSHOT'
         junitJupiterVersion = "5.9.3"
         mockitoVersion = "5.4.0"
         mockitoInlineVersion = "3.4.0"
