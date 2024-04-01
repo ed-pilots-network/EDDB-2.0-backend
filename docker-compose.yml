@@ -39,6 +39,7 @@ services:
     ## TODO: Tag this image locally
     image: "postgis/postgis:15-3.3-alpine"
     restart: on-failure
+    shm_size: '1gb' # needed to allow vacuum
     env_file:
       - env/${ENVIRONMENT}/.env_trademodule
     volumes:
@@ -55,6 +56,7 @@ services:
     ## TODO: Tag this image locally
     image: "postgis/postgis:15-3.3-alpine"
     restart: on-failure
+    shm_size: '1gb' # needed to allow vacuum
     env_file:
       - env/${ENVIRONMENT}/.env_explorationmodule
     volumes:
