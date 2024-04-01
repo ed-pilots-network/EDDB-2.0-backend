@@ -6,18 +6,18 @@
 
     <changeSet id="add_commodity_cover_indexes" author="daniel-j-mason">
         <createIndex tableName="latest_market_datum" indexName="latest_market_datum_compound_buy_market_index">
-            <column>station_id</column>
-            <column>commodity_id</column>
-            <column>timestamp</column>
-            <column>buy_price</column>
-            <column>stock</column>
+            <column name="station_id"/>
+            <column name="commodity_id"/>
+            <column name="timestamp"/>
+            <column name="buy_price"/>
+            <column name="stock"/>
         </createIndex>
         <createIndex tableName="latest_market_datum" indexName="latest_market_datum_compound_sell_market_index">
-            <column>station_id</column>
-            <column>commodity_id</column>
-            <column>timestamp</column>
-            <column>sell_price</column>
-            <column>demand</column>
+            <column name="station_id"/>
+            <column name="commodity_id"/>
+            <column name="timestamp"/>
+            <column name="sell_price"/>
+            <column name="demand"/>
         </createIndex>
     </changeSet>
 
