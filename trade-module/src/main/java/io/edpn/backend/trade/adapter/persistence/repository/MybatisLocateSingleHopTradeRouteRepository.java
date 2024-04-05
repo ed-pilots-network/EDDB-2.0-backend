@@ -95,7 +95,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                 AND st_3ddwithin(sell_market.coordinates_geom, buy_market.coordinates_geom, #{maxRouteDistance})
                 AND 100 >= buy_market.rn AND 100 >= sell_market.rn
                 AND buy_market.buy_station_id != sell_market.sell_station_id
-            WHERE (sell_market.sell_price - buy_market.buy_price) > 10000
+            WHERE (sell_market.sell_price - buy_market.buy_price) > 5000
             ORDER BY profit DESC, buy_market.arrival_distance + sell_arrival_distance
             LIMIT 50
             </script>""")
