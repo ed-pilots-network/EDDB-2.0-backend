@@ -22,7 +22,7 @@ public class LocateSingleHopTradeFilter {
     private List<String> commodityDisplayNames; //if empty default all
     private Integer maxPriceAgeHours; //max 72 (for now)
     private Integer maxRouteDistance; //default 80
-    private LandingPadSize maxLandingPadSize; //TODO
+    private LandingPadSize maxLandingPadSize;
     private Integer maxArrivalDistance; //default < 5000
     private Integer minSupply; //default 10000
     private Integer minDemand; //default 10000
