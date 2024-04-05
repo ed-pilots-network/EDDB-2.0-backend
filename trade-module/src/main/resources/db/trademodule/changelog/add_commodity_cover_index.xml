@@ -5,10 +5,10 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <changeSet id="add_commodity_cover_index" author="daniel-j-mason">
-        <sql>
-            create index commodity_id_is_rare_index
-                on commodity (id, is_rare) include (display_name);
-        </sql>
+        <createIndex tableName="commodity" indexName="commodity_id_display_name_is_rare_index">
+            <column name="id"/>
+            <column name="is_rare"/>
+            <column name="display_name"/>
+        </createIndex>
     </changeSet>
-
 </databaseChangeLog>
