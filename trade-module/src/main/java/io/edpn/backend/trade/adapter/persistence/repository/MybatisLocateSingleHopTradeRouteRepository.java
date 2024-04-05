@@ -61,7 +61,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                   AND commodity_list.is_rare = false
                                   AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours})
                                   AND buy_price IS NOT null),
-                        
+            
                  sell_market AS (SELECT commodity_id,
                                         station_id                                                             as sell_station_id,
                                         arrival_distance                                                       AS sell_arrival_distance,
@@ -78,7 +78,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                  WHERE (demand = 0 OR demand > #{minDemand})
                                    AND commodity_list.is_rare = false
                                    AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours}))
-                        
+            
             SELECT buy_market.commodity_id,
                    buy_market.buy_station_id,
                    buy_market.buy_price,
@@ -89,7 +89,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                    (sell_market.sell_price - buy_market.buy_price)                                                          AS profit,
                    st_3ddistance(buy_market.coordinates_geom, sell_market.coordinates_geom)                                 AS route_distance,
                    st_3ddistance(st_makepoint(#{xCoordinate}, #{yCoordinate}, #{zCoordinate}), buy_market.coordinates_geom) AS distance_from_reference
-                   
+            
             FROM buy_market
                      INNER JOIN sell_market ON buy_market.commodity_id = sell_market.commodity_id
                 AND st_3ddwithin(sell_market.coordinates_geom, buy_market.coordinates_geom, #{maxRouteDistance})
