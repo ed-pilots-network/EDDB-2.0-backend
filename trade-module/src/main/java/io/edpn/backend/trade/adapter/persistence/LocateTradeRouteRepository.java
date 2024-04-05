@@ -23,9 +23,6 @@ public class LocateTradeRouteRepository implements LocateSingleHopeTradeByFilter
     public List<SingleHopRoute> locateRoutesByFilter(LocateSingleHopTradeFilter locateSingleHopTradeFilter) {
         MybatisLocateSingleHopTradeFilter mybatisLocateSingleHopTradeFilter = locateSingleHopTradeFilterMapper.map(locateSingleHopTradeFilter);
         
-        System.out.println("HERE");
-        locateSingleHopTradeRouteRepository.locateRoutesByFilter(mybatisLocateSingleHopTradeFilter).forEach(System.out::println);
-        
         return locateSingleHopTradeRouteRepository
                 .locateRoutesByFilter(mybatisLocateSingleHopTradeFilter)
                 .stream()
