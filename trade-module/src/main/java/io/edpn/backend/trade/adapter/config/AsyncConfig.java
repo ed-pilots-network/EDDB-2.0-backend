@@ -1,6 +1,5 @@
 package io.edpn.backend.trade.adapter.config;
 
-import java.util.concurrent.ForkJoinPool;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
@@ -16,10 +15,5 @@ public class AsyncConfig {
         ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
         taskScheduler.setPoolSize(10); // todo Set from config
         return taskScheduler;
-    }
-
-    @Bean(name = "tradeForkJoinPool")
-    public ForkJoinPool forkJoinPool() {
-        return new ForkJoinPool(50); // todo Set from config
     }
 }

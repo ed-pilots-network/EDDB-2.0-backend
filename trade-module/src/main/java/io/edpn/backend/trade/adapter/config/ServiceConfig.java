@@ -116,7 +116,7 @@ public class ServiceConfig {
             UpdateStationPort updateStationPort,
             SendKafkaMessagePort sendKafkaMessagePort,
             @Qualifier("tradeRetryTemplate") RetryTemplate retryTemplate,
-            @Qualifier("tradeForkJoinPool") Executor executor,
+            @Qualifier("virtualThreadPerTaskExecutor") Executor executor,
             ObjectMapper objectMapper) {
         return new StationArrivalDistanceInterModuleCommunicationService(
                 idGenerator,
@@ -146,7 +146,7 @@ public class ServiceConfig {
             UpdateSystemPort updateSystemPort,
             SendKafkaMessagePort sendKafkaMessagePort,
             @Qualifier("tradeRetryTemplate") RetryTemplate retryTemplate,
-            @Qualifier("tradeForkJoinPool") Executor executor,
+            @Qualifier("virtualThreadPerTaskExecutor") Executor executor,
             ObjectMapper objectMapper
     ) {
         return new SystemCoordinateInterModuleCommunicationService(
@@ -178,7 +178,7 @@ public class ServiceConfig {
             UpdateStationPort updateStationPort,
             SendKafkaMessagePort sendKafkaMessagePort,
             @Qualifier("tradeRetryTemplate") RetryTemplate retryTemplate,
-            @Qualifier("tradeForkJoinPool") Executor executor,
+            @Qualifier("virtualThreadPerTaskExecutor") Executor executor,
             ObjectMapper objectMapper
     ) {
         return new StationLandingPadSizeInterModuleCommunicationService(
@@ -211,7 +211,7 @@ public class ServiceConfig {
             UpdateStationPort updateStationPort,
             SendKafkaMessagePort sendKafkaMessagePort,
             @Qualifier("tradeRetryTemplate") RetryTemplate retryTemplate,
-            @Qualifier("tradeForkJoinPool") Executor executor,
+            @Qualifier("virtualThreadPerTaskExecutor") Executor executor,
             ObjectMapper objectMapper
     ) {
         return new StationPlanetaryInterModuleCommunicationService(
@@ -244,7 +244,7 @@ public class ServiceConfig {
             UpdateStationPort updateStationPort,
             SendKafkaMessagePort sendKafkaMessagePort,
             @Qualifier("tradeRetryTemplate") RetryTemplate retryTemplate,
-            @Qualifier("tradeForkJoinPool") Executor executor,
+            @Qualifier("virtualThreadPerTaskExecutor") Executor executor,
             ObjectMapper objectMapper
     ) {
         return new StationRequireOdysseyInterModuleCommunicationService(
@@ -276,7 +276,7 @@ public class ServiceConfig {
             UpdateSystemPort updateSystemPort,
             SendKafkaMessagePort sendKafkaMessagePort,
             @Qualifier("tradeRetryTemplate") RetryTemplate retryTemplate,
-            @Qualifier("tradeForkJoinPool") Executor executor,
+            @Qualifier("virtualThreadPerTaskExecutor") Executor executor,
             ObjectMapper objectMapper
     ) {
         return new SystemEliteIdInterModuleCommunicationService(
