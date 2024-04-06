@@ -54,7 +54,7 @@ class MybatisStationEntityMapperTest {
         Boolean planetary = true;
         Boolean requireOdyssey = true;
         Boolean fleetCarrier = true;
-        String maxLandingPadSize = "LARGE";
+        int maxLandingPadSize = 300;
         LocalDateTime marketUpdatedAt = LocalDateTime.now();
 
         MybatisStationEntity entity = MybatisStationEntity.builder()
@@ -72,7 +72,7 @@ class MybatisStationEntityMapperTest {
                 .build();
 
         when(mybatisSystemEntityMapper.map(entity.getSystem())).thenReturn(mockSystem);
-        when(mybatisMarketDatumEntityMapper.map(entity.getMarketData().get(0))).thenReturn(mockMarketDatum);
+        when(mybatisMarketDatumEntityMapper.map(entity.getMarketData().getFirst())).thenReturn(mockMarketDatum);
 
         Station domainObject = underTest.map(entity);
 
@@ -87,7 +87,7 @@ class MybatisStationEntityMapperTest {
         assertThat(domainObject.marketUpdatedAt(), is(marketUpdatedAt));
 
         verify(mybatisSystemEntityMapper, times(1)).map(entity.getSystem());
-        verify(mybatisMarketDatumEntityMapper, times(1)).map(entity.getMarketData().get(0));
+        verify(mybatisMarketDatumEntityMapper, times(1)).map(entity.getMarketData().getFirst());
     }
 
     @Test
@@ -122,7 +122,7 @@ class MybatisStationEntityMapperTest {
         );
 
         when(mybatisSystemEntityMapper.map(domainObject.system())).thenReturn(mockMybatisSystemEntity);
-        when(mybatisMarketDatumEntityMapper.map(domainObject.marketData().get(0))).thenReturn(mockMybatisMarketDatumEntity);
+        when(mybatisMarketDatumEntityMapper.map(domainObject.marketData().getFirst())).thenReturn(mockMybatisMarketDatumEntity);
 
         MybatisStationEntity entity = underTest.map(domainObject);
 
@@ -133,10 +133,10 @@ class MybatisStationEntityMapperTest {
         assertThat(entity.getPlanetary(), is(planetary));
         assertThat(entity.getRequireOdyssey(), is(requireOdyssey));
         assertThat(entity.getFleetCarrier(), is(fleetCarrier));
-        assertThat(entity.getMaxLandingPadSize(), is(maxLandingPadSize));
+        assertThat(entity.getMaxLandingPadSize(), is(300));
         assertThat(entity.getMarketUpdatedAt(), is(marketUpdatedAt));
 
         verify(mybatisSystemEntityMapper, times(1)).map(domainObject.system());
-        verify(mybatisMarketDatumEntityMapper, times(1)).map(domainObject.marketData().get(0));
+        verify(mybatisMarketDatumEntityMapper, times(1)).map(domainObject.marketData().getFirst());
     }
 }

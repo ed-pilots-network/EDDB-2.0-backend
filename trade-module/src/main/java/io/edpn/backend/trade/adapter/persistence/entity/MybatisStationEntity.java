@@ -28,7 +28,7 @@ public class MybatisStationEntity {
     private Boolean planetary;
     private Boolean requireOdyssey;
     private Boolean fleetCarrier;
-    private String maxLandingPadSize;
+    private int maxLandingPadSize;
     private LocalDateTime marketUpdatedAt;
     @Builder.Default
     private List<MybatisMarketDatumEntity> marketData = new ArrayList<>();

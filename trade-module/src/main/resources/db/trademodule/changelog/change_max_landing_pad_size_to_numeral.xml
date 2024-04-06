@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="change_max_landing_pad_size_to_numeral_add_temp_column" author="pveeckhout">
+        <addColumn tableName="station">
+            <column name="max_landing_pad_size_temp" type="integer"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="change_max_landing_pad_size_to_numeral_fill_temp_column" author="pveeckhout">
+        <sql>
+            UPDATE station SET max_landing_pad_size_temp = CASE
+                                                               WHEN max_landing_pad_size = 'SMALL' THEN 100
+                                                               WHEN max_landing_pad_size = 'MEDIUM' THEN 200
+                                                               WHEN max_landing_pad_size = 'LARGE' THEN 300
+                                                               ELSE -1 -- Handling any unexpected values, nulls and UNKNOWN
+                END
+        </sql>
+    </changeSet>
+
+    <changeSet id="change_max_landing_pad_size_to_numeral_drop_old_column" author="pveeckhout">
+        <dropColumn columnName="max_landing_pad_size" tableName="station"/>
+    </changeSet>
+
+    <changeSet id="change_max_landing_pad_size_to_numeral_rename_column" author="pveeckhout">
+        <renameColumn oldColumnName="max_landing_pad_size_temp" newColumnName="max_landing_pad_size" tableName="station"/>
+    </changeSet>
+
+</databaseChangeLog>

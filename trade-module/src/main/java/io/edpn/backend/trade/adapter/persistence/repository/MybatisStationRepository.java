@@ -30,7 +30,7 @@ public interface MybatisStationRepository {
             @Result(property = "planetary", column = "planetary", javaType = boolean.class),
             @Result(property = "requireOdyssey", column = "require_odyssey", javaType = boolean.class),
             @Result(property = "fleetCarrier", column = "fleet_carrier", javaType = boolean.class),
-            @Result(property = "maxLandingPadSize", column = "max_landing_pad_size", javaType = String.class),
+            @Result(property = "maxLandingPadSize", column = "max_landing_pad_size", javaType = Integer.class),
             @Result(property = "marketUpdatedAt", column = "market_updated_at", javaType = LocalDateTime.class)
     })
     Optional<MybatisStationEntity> findById(@Param("id") UUID id);
@@ -45,7 +45,10 @@ public interface MybatisStationRepository {
             SELECT * FROM station
             WHERE 1 = 1
             <if test='hasRequiredOdyssey != null'>AND require_odyssey IS NULL != #{hasRequiredOdyssey}</if>
-            <if test='hasLandingPadSize != null'>AND max_landing_pad_size IS NULL != #{hasLandingPadSize}</if>
+            <if test='hasLandingPadSize != null'>AND (
+                            max_landing_pad_size IS NULL != #{hasLandingPadSize} OR
+                            (max_landing_pad_size = -1) !=  #{hasLandingPadSize}
+            </if>
             <if test='hasPlanetary != null'>AND planetary IS NULL != #{hasPlanetary}</if>
             <if test='hasArrivalDistance != null'>AND arrival_distance IS NULL != #{hasArrivalDistance}</if>
             </script>

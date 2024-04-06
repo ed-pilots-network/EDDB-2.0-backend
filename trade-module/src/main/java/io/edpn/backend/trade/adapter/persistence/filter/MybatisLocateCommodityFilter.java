@@ -24,7 +24,7 @@ public class MybatisLocateCommodityFilter {
     private Boolean includePlanetary;
     private Boolean includeOdyssey;
     private Boolean includeFleetCarriers;
-    private String maxLandingPadSize;
+    private Integer maxLandingPadSize;
     private Long minSupply;
     private Long minDemand;
 }

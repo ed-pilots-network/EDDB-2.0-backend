@@ -23,7 +23,7 @@ public class MybatisStationEntityMapper {
                 mybatisStationEntity.getPlanetary(),
                 mybatisStationEntity.getRequireOdyssey(),
                 mybatisStationEntity.getFleetCarrier(),
-                LandingPadSize.valueOf(mybatisStationEntity.getMaxLandingPadSize()),
+                LandingPadSize.fromInteger(mybatisStationEntity.getMaxLandingPadSize()),
                 mybatisStationEntity.getMarketUpdatedAt(),
                 mybatisStationEntity.getMarketData().stream().map(mybatisMarketDatumEntityMapper::map).toList()
         );
@@ -39,7 +39,7 @@ public class MybatisStationEntityMapper {
                 .planetary(station.planetary())
                 .requireOdyssey(station.requireOdyssey())
                 .fleetCarrier(station.fleetCarrier())
-                .maxLandingPadSize(Optional.ofNullable(station.maxLandingPadSize()).map(LandingPadSize::name).orElse(LandingPadSize.UNKNOWN.name()))
+                .maxLandingPadSize(Optional.ofNullable(station.maxLandingPadSize()).map(LandingPadSize::value).orElse(LandingPadSize.UNKNOWN.value()))
                 .marketUpdatedAt(station.marketUpdatedAt())
                 .marketData(station.marketData().stream().map(mybatisMarketDatumEntityMapper::map).toList())
                 .build();
