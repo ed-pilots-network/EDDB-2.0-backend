@@ -85,7 +85,7 @@ public class ReceiveJournalScanService implements ReceiveKafkaMessageUseCase<Sca
                     saveOrUpdateSystemPort.saveOrUpdate(
                             System.builder()
                                     .id(idGenerator.generateId())
-                                    .name(payload.name())
+                                    .name(payload.system())
                                     .build()
                     ),
                     payload.systemAddress(),
@@ -168,7 +168,7 @@ public class ReceiveJournalScanService implements ReceiveKafkaMessageUseCase<Sca
                     saveOrUpdateSystemPort.saveOrUpdate(
                             System.builder()
                                     .id(idGenerator.generateId())
-                                    .name(payload.name())
+                                    .name(payload.system())
                                     .build()
                     ),
                     payload.systemAddress(),
