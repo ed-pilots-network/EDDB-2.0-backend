@@ -8,6 +8,7 @@ import io.edpn.backend.trade.application.port.outgoing.commodity.CreateOrLoadCom
 import io.edpn.backend.trade.application.port.outgoing.commoditymarketinfo.GetFullCommodityMarketInfoPort;
 import io.edpn.backend.trade.application.port.outgoing.kafka.SendKafkaMessagePort;
 import io.edpn.backend.trade.application.port.outgoing.locatecommodity.LocateCommodityByFilterPort;
+import io.edpn.backend.trade.application.port.outgoing.locatetraderoute.LocateSingleHopeTradeByFilterPort;
 import io.edpn.backend.trade.application.port.outgoing.marketdatum.CreateWhenNotExistsMarketDatumPort;
 import io.edpn.backend.trade.application.port.outgoing.marketdatum.createOrUpdateExistingWhenNewerLatestMarketDatumPort;
 import io.edpn.backend.trade.application.port.outgoing.station.CreateOrLoadStationPort;
@@ -46,6 +47,7 @@ import io.edpn.backend.trade.application.port.outgoing.validatedcommodity.LoadVa
 import io.edpn.backend.trade.application.service.FindCommodityMarketInfoService;
 import io.edpn.backend.trade.application.service.FindCommodityService;
 import io.edpn.backend.trade.application.service.LocateCommodityService;
+import io.edpn.backend.trade.application.service.LocateTradeRouteService;
 import io.edpn.backend.trade.application.service.ReceiveCommodityMessageService;
 import io.edpn.backend.trade.application.service.StationArrivalDistanceInterModuleCommunicationService;
 import io.edpn.backend.trade.application.service.StationLandingPadSizeInterModuleCommunicationService;
@@ -69,26 +71,29 @@ public class ServiceConfig {
     public FindCommodityService findCommodityService(
             LoadAllValidatedCommodityPort loadAllValidatedCommodityPort,
             LoadValidatedCommodityByNamePort loadValidatedCommodityByNamePort,
-            LoadValidatedCommodityByFilterPort loadValidatedCommodityByFilterPort
-    ) {
+            LoadValidatedCommodityByFilterPort loadValidatedCommodityByFilterPort) {
         return new FindCommodityService(loadAllValidatedCommodityPort, loadValidatedCommodityByNamePort, loadValidatedCommodityByFilterPort);
     }
 
     @Bean(name = "tradeFindCommodityMarketInfoService")
     public FindCommodityMarketInfoService findCommodityMarketInfoService(
-            GetFullCommodityMarketInfoPort commodityMarketInfoPort
-    ) {
+            GetFullCommodityMarketInfoPort commodityMarketInfoPort) {
         return new FindCommodityMarketInfoService(commodityMarketInfoPort);
     }
 
     @Bean(name = "tradeLocateCommodityService")
     public LocateCommodityService locateCommodityService(
-            LocateCommodityByFilterPort locateCommodityByFilterPort
-    ) {
+            LocateCommodityByFilterPort locateCommodityByFilterPort) {
         return new LocateCommodityService(locateCommodityByFilterPort);
     }
+    
+    @Bean(name = "tradeLocateTradeRouteService")
+    public LocateTradeRouteService locateTradeRouteService(
+            LocateSingleHopeTradeByFilterPort locateSingleHopeTradeByFilterPort) {
+        return new LocateTradeRouteService(locateSingleHopeTradeByFilterPort);
+    }
 
-    @Bean(name = "tradeRecieveCommodityMessageUsecase")
+    @Bean(name = "tradeReceiveCommodityMessageUsecase")
     public ReceiveCommodityMessageService receiveCommodityMessageService(
             @Qualifier("tradeIdGenerator") IdGenerator idGenerator,
             CreateOrLoadSystemPort createOrLoadSystemPort,

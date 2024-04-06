@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="add_commodity_cover_indexes" author="daniel-j-mason">
+    <changeSet id="add_latest_market_datum_cover_indexes" author="daniel-j-mason">
         <createIndex tableName="latest_market_datum" indexName="latest_market_datum_compound_buy_market_index">
             <column name="station_id"/>
             <column name="commodity_id"/>

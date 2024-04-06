@@ -4,6 +4,7 @@ import io.edpn.backend.trade.adapter.persistence.entity.mapper.MybatisCommodityE
 import io.edpn.backend.trade.adapter.persistence.entity.mapper.MybatisCommodityMarketInfoEntityMapper;
 import io.edpn.backend.trade.adapter.persistence.entity.mapper.MybatisLocateCommodityEntityMapper;
 import io.edpn.backend.trade.adapter.persistence.entity.mapper.MybatisMarketDatumEntityMapper;
+import io.edpn.backend.trade.adapter.persistence.entity.mapper.MybatisSingleHopEntityMapper;
 import io.edpn.backend.trade.adapter.persistence.entity.mapper.MybatisStationDataRequestEntityMapper;
 import io.edpn.backend.trade.adapter.persistence.entity.mapper.MybatisStationEntityMapper;
 import io.edpn.backend.trade.adapter.persistence.entity.mapper.MybatisSystemDataRequestEntityMapper;
@@ -13,6 +14,7 @@ import io.edpn.backend.trade.adapter.persistence.filter.mapper.MybatisFindCommod
 import io.edpn.backend.trade.adapter.persistence.filter.mapper.MybatisFindStationFilterMapper;
 import io.edpn.backend.trade.adapter.persistence.filter.mapper.MybatisFindSystemFilterMapper;
 import io.edpn.backend.trade.adapter.persistence.filter.mapper.MybatisLocateCommodityFilterMapper;
+import io.edpn.backend.trade.adapter.persistence.filter.mapper.MybatisLocateSingleHopTradeFilterMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -67,6 +69,18 @@ public class MybatisEntityMapperConfig {
             MybatisValidatedCommodityEntityMapper mybatisValidatedCommodityEntityMapper,
             MybatisStationEntityMapper mybatisStationEntityMapper) {
         return new MybatisLocateCommodityEntityMapper(mybatisValidatedCommodityEntityMapper, mybatisStationEntityMapper);
+    }
+    
+    @Bean(name = "tradeLocateSingleHopTradeFilterMapper")
+    public MybatisLocateSingleHopTradeFilterMapper locateSingleHopTradeFilterMapper() {
+        return new MybatisLocateSingleHopTradeFilterMapper();
+    }
+    
+    @Bean(name = "tradeSingleHopTradeEntityMapper")
+    public MybatisSingleHopEntityMapper singleHopEntityMapper(
+            MybatisValidatedCommodityEntityMapper mybatisValidatedCommodityEntityMapper,
+            MybatisStationEntityMapper mybatisStationEntityMapper){
+        return new MybatisSingleHopEntityMapper(mybatisValidatedCommodityEntityMapper, mybatisStationEntityMapper);
     }
 
     @Bean(name = "tradeCommodityMarketInfoEntityMapper")
