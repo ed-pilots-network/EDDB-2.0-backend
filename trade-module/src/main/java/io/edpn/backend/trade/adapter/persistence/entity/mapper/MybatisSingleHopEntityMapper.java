@@ -21,8 +21,7 @@ public class MybatisSingleHopEntityMapper {
                 mybatisSingleHopEntity.getSellPrice(),
                 mybatisSingleHopEntity.getDemand(),
                 mybatisSingleHopEntity.getProfit(),
-                mybatisSingleHopEntity.getRouteDistance(),
-                mybatisSingleHopEntity.getDistanceFromReferenceStation()
+                mybatisSingleHopEntity.getRouteDistance()
         );
     }
 }

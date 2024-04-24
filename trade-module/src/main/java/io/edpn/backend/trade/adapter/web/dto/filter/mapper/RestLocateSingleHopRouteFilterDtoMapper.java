@@ -12,16 +12,16 @@ public class RestLocateSingleHopRouteFilterDtoMapper {
     public LocateSingleHopTradeFilter map(RestLocateSingleHopRouteFilterDto locateSingleHopRouteFilterDto) {
         
         return LocateSingleHopTradeFilter.builder()
-                .xCoordinate(locateSingleHopRouteFilterDto.xCoordinate())
-                .yCoordinate(locateSingleHopRouteFilterDto.yCoordinate())
-                .zCoordinate(locateSingleHopRouteFilterDto.zCoordinate())
+                .buyFromSystemName(locateSingleHopRouteFilterDto.buyFromSystemName())
+                .buyFromStationName(locateSingleHopRouteFilterDto.buyFromStationName())
+                .sellToSystemName(locateSingleHopRouteFilterDto.sellToSystemName())
+                .sellToStationName(locateSingleHopRouteFilterDto.sellToStationName())
                 .commodityDisplayNames(Optional.ofNullable(locateSingleHopRouteFilterDto.commodityDisplayNames()).orElseGet(ArrayList::new))
                 .maxPriceAgeHours(locateSingleHopRouteFilterDto.maxPriceAgeHours())
                 .maxRouteDistance(locateSingleHopRouteFilterDto.maxRouteDistance())
                 .maxLandingPadSize(LandingPadSize.valueOf(locateSingleHopRouteFilterDto.maxLandingPadSize()))
                 .maxArrivalDistance(locateSingleHopRouteFilterDto.maxArrivalDistance())
-                .minSupply(locateSingleHopRouteFilterDto.minSupply())
-                .minDemand(locateSingleHopRouteFilterDto.minDemand())
+                .cargoCapacity(locateSingleHopRouteFilterDto.cargoCapacity())
                 .includeSurfaceStations(locateSingleHopRouteFilterDto.includeSurfaceStations())
                 .includeFleetCarriers(locateSingleHopRouteFilterDto.includeFleetCarriers())
                 .build();

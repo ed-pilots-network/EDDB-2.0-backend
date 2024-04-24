@@ -22,7 +22,6 @@ public class RestSingleHopRouteDtoMapper {
                 .demand(singleHopRoute.demand())
                 .profit(singleHopRoute.profit())
                 .routeDistance(singleHopRoute.routeDistance())
-                .distanceFromReferenceStation(singleHopRoute.distanceFromReferenceStation())
                 .build();
     }
 }

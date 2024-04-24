@@ -24,5 +24,4 @@ public class MybatisSingleHopEntity {
     private Long demand;
     private Long profit;
     private Double routeDistance;
-    private Double distanceFromReferenceStation;
 }
