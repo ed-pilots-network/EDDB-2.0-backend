@@ -19,10 +19,10 @@ import java.util.List;
 @EqualsAndHashCode
 public class MybatisLocateSingleHopTradeFilter {
     
-    private String buyFromSystemName;//TODO
-    private String buyFromStationName;//TODO
+    private String buyFromSystemName;
+    private String buyFromStationName;
     private String sellToSystemName;
-    private String sellToStationName;//TODO
+    private String sellToStationName;
     private List<String> commodityDisplayNames;
     private Integer maxPriceAgeHours;
     private Integer maxRouteDistance;
