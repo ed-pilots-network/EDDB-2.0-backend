@@ -165,14 +165,14 @@ public class LocateSingleHopTradeByFilterPortTest {
         SingleHopRoute singleHopRoute = mock(SingleHopRoute.class);
         
         when(mybatisLocateSingleHopTradeFilterMapper.map(locateSingleHopTradeFilter)).thenReturn(mybatisLocateSingleHopTradeFilter);
-        when(mybatisLocateSingleHopTradeRouteRepository.findBestBuyWithinRangeOfStation(mybatisLocateSingleHopTradeFilter)).thenReturn(Collections.singletonList(mybatisSingleHopEntity));
+        when(mybatisLocateSingleHopTradeRouteRepository.findBestSellWithinRangeOfStation(mybatisLocateSingleHopTradeFilter)).thenReturn(Collections.singletonList(mybatisSingleHopEntity));
         when(mybatisSingleHopEntityMapper.map(mybatisSingleHopEntity)).thenReturn(singleHopRoute);
         
         List<SingleHopRoute> result = underTest.locateRoutesByFilter(locateSingleHopTradeFilter);
         
         verify(mybatisLocateSingleHopTradeFilterMapper).map(locateSingleHopTradeFilter);
-        verify(mybatisLocateSingleHopTradeRouteRepository).findBestBuyWithinRangeOfStation(mybatisLocateSingleHopTradeFilter);
-        verify(mybatisLocateSingleHopTradeRouteRepository, times(1)).findBestBuyWithinRangeOfStation(mybatisLocateSingleHopTradeFilter);
+        verify(mybatisLocateSingleHopTradeRouteRepository).findBestSellWithinRangeOfStation(mybatisLocateSingleHopTradeFilter);
+        verify(mybatisLocateSingleHopTradeRouteRepository, times(1)).findBestSellWithinRangeOfStation(mybatisLocateSingleHopTradeFilter);
         verify(mybatisSingleHopEntityMapper).map(mybatisSingleHopEntity);
         verifyNoMoreInteractions(mybatisLocateSingleHopTradeFilterMapper, mybatisLocateSingleHopTradeRouteRepository, mybatisSingleHopEntityMapper);
         
