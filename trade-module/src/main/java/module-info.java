@@ -38,4 +38,8 @@ module edpn.backend.trade {
     exports io.edpn.backend.trade.adapter.web.dto.filter.mapper;
     exports io.edpn.backend.trade.application.domain.intermodulecommunication;
     exports io.edpn.backend.trade.application.port.incomming.locatetraderoute;
+    exports io.edpn.backend.trade.application.port.incomming.station;
+    exports io.edpn.backend.trade.application.port.incomming.system;
+    exports io.edpn.backend.trade.adapter.web.validator;
+    
 }

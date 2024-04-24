@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface MybatisSystemRepository {
-
+    
     @Select({
             "SELECT id, name, elite_id, ST_X(coordinates_geom) as x_coordinate, ST_Y(coordinates_geom) as y_coordinate, ST_Z(coordinates_geom) as z_coordinate",
             "FROM system ",
@@ -33,25 +33,25 @@ public interface MybatisSystemRepository {
             @Result(property = "zCoordinate", column = "z_coordinate", javaType = Double.class)
     })
     Optional<MybatisSystemEntity> findById(UUID id);
-
+    
     @Select("SELECT * FROM system WHERE name = #{name}")
     @ResultMap("systemResultMap")
     Optional<MybatisSystemEntity> findByName(@Param("name") String name);
-
+    
     @Insert({"INSERT INTO system (id, name, elite_id, coordinates_geom) ",
             "VALUES (#{id}, #{name}, #{eliteId}, ST_MakePoint(#{xCoordinate}, #{yCoordinate}, #{zCoordinate}))"})
     void insert(MybatisSystemEntity system);
-
+    
     @Update({"UPDATE system",
             "SET name = #{name},",
             "elite_id = #{eliteId},",
             "coordinates_geom = ST_MakePoint(#{xCoordinate}, #{yCoordinate}, #{zCoordinate})",
             "WHERE id = #{id}"})
     void update(MybatisSystemEntity system);
-
+    
     @Delete("DELETE FROM system WHERE id = #{id}")
     void delete(UUID id);
-
+    
     @Select("""
             <script>
             SELECT id, name, elite_id, ST_X(coordinates_geom) as x_coordinate, ST_Y(coordinates_geom) as y_coordinate, ST_Z(coordinates_geom) as z_coordinate
@@ -64,7 +64,7 @@ public interface MybatisSystemRepository {
             """)
     @ResultMap("systemResultMap")
     List<MybatisSystemEntity> findByFilter(MybatisFindSystemFilter map);
-
+    
     @Select({"INSERT INTO system (id, name, elite_id, coordinates_geom)",
             "VALUES (#{id}, #{name}, #{eliteId}, ST_MakePoint(#{xCoordinate}, #{yCoordinate}, #{zCoordinate}))",
             "ON CONFLICT (name)",
@@ -75,4 +75,14 @@ public interface MybatisSystemRepository {
     })
     @ResultMap("systemResultMap")
     MybatisSystemEntity createOrUpdateOnConflict(MybatisSystemEntity map);
+    
+    @Select({
+            "SELECT id, name, elite_id, ST_X(coordinates_geom) as x_coordinate, ST_Y(coordinates_geom) as y_coordinate, ST_Z(coordinates_geom) as z_coordinate " +
+                    "FROM system " +
+                    "WHERE name ILIKE CONCAT('%', #{name}, '%')" +
+                    "ORDER BY CASE WHEN name ILIKE CONCAT(#{name}, '%') THEN 0 ELSE 1 END, name " +
+                    "LIMIT #{amount}"
+    })
+    @ResultMap("systemResultMap")
+    List<MybatisSystemEntity> findSystemsByNameContaining(@Param("name") String name, @Param("amount") Integer amount);
 }

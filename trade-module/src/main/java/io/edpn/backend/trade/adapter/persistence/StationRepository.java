@@ -8,6 +8,7 @@ import io.edpn.backend.trade.application.domain.filter.FindStationFilter;
 import io.edpn.backend.trade.application.port.outgoing.station.CreateOrLoadStationPort;
 import io.edpn.backend.trade.application.port.outgoing.station.LoadStationByIdPort;
 import io.edpn.backend.trade.application.port.outgoing.station.LoadStationsByFilterPort;
+import io.edpn.backend.trade.application.port.outgoing.station.LoadStationsBySystemNamePort;
 import io.edpn.backend.trade.application.port.outgoing.station.UpdateStationPort;
 import io.edpn.backend.util.exception.DatabaseEntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Slf4j
-public class StationRepository implements CreateOrLoadStationPort, LoadStationByIdPort, UpdateStationPort, LoadStationsByFilterPort {
+public class StationRepository implements CreateOrLoadStationPort, LoadStationByIdPort, UpdateStationPort, LoadStationsByFilterPort, LoadStationsBySystemNamePort {
 
     private final MybatisStationEntityMapper mybatisStationEntityMapper;
     private final MybatisStationRepository mybatisStationRepository;
@@ -48,6 +49,14 @@ public class StationRepository implements CreateOrLoadStationPort, LoadStationBy
     @Override
     public List<Station> loadByFilter(FindStationFilter findStationFilter) {
         return mybatisStationRepository.findByFilter(mybatisFindStationFilterMapper.map(findStationFilter))
+                .stream()
+                .map(mybatisStationEntityMapper::map)
+                .toList();
+    }
+    
+    @Override
+    public List<Station> findStationsBySystemName(String systemName) {
+        return mybatisStationRepository.findStationsBySystemName(systemName)
                 .stream()
                 .map(mybatisStationEntityMapper::map)
                 .toList();

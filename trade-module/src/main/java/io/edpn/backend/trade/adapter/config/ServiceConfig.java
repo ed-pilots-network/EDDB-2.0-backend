@@ -13,6 +13,7 @@ import io.edpn.backend.trade.application.port.outgoing.marketdatum.CreateWhenNot
 import io.edpn.backend.trade.application.port.outgoing.marketdatum.createOrUpdateExistingWhenNewerLatestMarketDatumPort;
 import io.edpn.backend.trade.application.port.outgoing.station.CreateOrLoadStationPort;
 import io.edpn.backend.trade.application.port.outgoing.station.LoadStationsByFilterPort;
+import io.edpn.backend.trade.application.port.outgoing.station.LoadStationsBySystemNamePort;
 import io.edpn.backend.trade.application.port.outgoing.station.UpdateStationPort;
 import io.edpn.backend.trade.application.port.outgoing.stationarrivaldistancerequest.CreateIfNotExistsStationArrivalDistanceRequestPort;
 import io.edpn.backend.trade.application.port.outgoing.stationarrivaldistancerequest.DeleteStationArrivalDistanceRequestPort;
@@ -32,6 +33,7 @@ import io.edpn.backend.trade.application.port.outgoing.stationrequireodysseyrequ
 import io.edpn.backend.trade.application.port.outgoing.stationrequireodysseyrequest.LoadAllStationRequireOdysseyRequestsPort;
 import io.edpn.backend.trade.application.port.outgoing.system.CreateOrLoadSystemPort;
 import io.edpn.backend.trade.application.port.outgoing.system.LoadSystemsByFilterPort;
+import io.edpn.backend.trade.application.port.outgoing.system.LoadSystemsByNameContainingPort;
 import io.edpn.backend.trade.application.port.outgoing.system.UpdateSystemPort;
 import io.edpn.backend.trade.application.port.outgoing.systemcoordinaterequest.CreateIfNotExistsSystemCoordinateRequestPort;
 import io.edpn.backend.trade.application.port.outgoing.systemcoordinaterequest.DeleteSystemCoordinateRequestPort;
@@ -50,13 +52,17 @@ import io.edpn.backend.trade.application.service.LocateCommodityService;
 import io.edpn.backend.trade.application.service.LocateTradeRouteService;
 import io.edpn.backend.trade.application.service.ReceiveCommodityMessageService;
 import io.edpn.backend.trade.application.service.StationArrivalDistanceInterModuleCommunicationService;
+import io.edpn.backend.trade.application.service.StationControllerService;
 import io.edpn.backend.trade.application.service.StationLandingPadSizeInterModuleCommunicationService;
 import io.edpn.backend.trade.application.service.StationPlanetaryInterModuleCommunicationService;
 import io.edpn.backend.trade.application.service.StationRequireOdysseyInterModuleCommunicationService;
+import io.edpn.backend.trade.application.service.SystemControllerService;
 import io.edpn.backend.trade.application.service.SystemCoordinateInterModuleCommunicationService;
 import io.edpn.backend.trade.application.service.SystemEliteIdInterModuleCommunicationService;
+import io.edpn.backend.trade.application.validation.LoadByNameContainingValidator;
 import io.edpn.backend.util.IdGenerator;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.support.RetryTemplate;
@@ -87,10 +93,35 @@ public class ServiceConfig {
         return new LocateCommodityService(locateCommodityByFilterPort);
     }
     
+    @Bean(name ="tradeStationControllerService")
+    public StationControllerService stationControllerService(
+            LoadStationsBySystemNamePort loadStationsBySystemNamePort){
+    return new StationControllerService(loadStationsBySystemNamePort);
+    }
+    
+    @Bean(name ="tradeSystemControllerService")
+    public SystemControllerService systemControllerService(
+            LoadSystemsByNameContainingPort loadSystemsByNameContainingPort,
+            LoadByNameContainingValidator loadByNameContainingValidator) {
+        return new SystemControllerService(loadSystemsByNameContainingPort, loadByNameContainingValidator);
+    }
+    
     @Bean(name = "tradeLocateTradeRouteService")
     public LocateTradeRouteService locateTradeRouteService(
             LocateSingleHopeTradeByFilterPort locateSingleHopeTradeByFilterPort) {
         return new LocateTradeRouteService(locateSingleHopeTradeByFilterPort);
+    }
+    
+    @Bean(name = "tradeLoadByNameContainingValidator")
+    public LoadByNameContainingValidator loadByNameContainingValidator(
+            @Value(value = "${exploration.loadbynamecontainingvalidator.min_length:3}") final int minLength,
+            @Value(value = "${exploration.loadbynamecontainingvalidator.min_size:1}") final int minSize,
+            @Value(value = "${exploration.loadbynamecontainingvalidator.max_size:100}") final int maxSize
+    ) {
+        return new LoadByNameContainingValidator(
+                minLength,
+                minSize,
+                maxSize);
     }
 
     @Bean(name = "tradeReceiveCommodityMessageUsecase")

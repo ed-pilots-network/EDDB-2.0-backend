@@ -69,4 +69,12 @@ public interface MybatisStationRepository {
     })
     @ResultMap("stationResultMap")
     MybatisStationEntity createOrUpdateOnConflict(MybatisStationEntity station);
+    
+    @Select({
+            "SELECT * FROM station " +
+            "INNER JOIN system ON station.system_id = system.id " +
+            "WHERE system.name = #{systemName}"
+    })
+    @ResultMap("stationResultMap")
+    List<MybatisStationEntity> findStationsBySystemName(@Param("systemName") String systemName);
 }
