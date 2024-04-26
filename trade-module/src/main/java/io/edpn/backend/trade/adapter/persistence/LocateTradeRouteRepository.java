@@ -11,8 +11,8 @@ import io.edpn.backend.trade.application.port.outgoing.locatetraderoute.LocateSi
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -27,34 +27,35 @@ public class LocateTradeRouteRepository implements LocateSingleHopeTradeByFilter
     public List<SingleHopRoute> locateRoutesByFilter(LocateSingleHopTradeFilter locateSingleHopTradeFilter) {
         MybatisLocateSingleHopTradeFilter mybatisLocateSingleHopTradeFilter = locateSingleHopTradeFilterMapper.map(locateSingleHopTradeFilter);
         
-        int caseNumber = (mybatisLocateSingleHopTradeFilter.getBuyFromSystemName() == null ? 0 : 4)
-                + (mybatisLocateSingleHopTradeFilter.getSellToSystemName() == null ? 0 : 2)
-                + (mybatisLocateSingleHopTradeFilter.getSellToStationName() == null && mybatisLocateSingleHopTradeFilter.getBuyFromStationName() == null ? 0 : 1);
         
+        boolean buySystemNameSet = Objects.nonNull(mybatisLocateSingleHopTradeFilter.getBuyFromSystemName());
+        boolean sellSystemNameSet =  Objects.nonNull(mybatisLocateSingleHopTradeFilter.getSellToSystemName());
+        boolean buyFromStationNameSet =  Objects.nonNull(mybatisLocateSingleHopTradeFilter.getBuyFromStationName());
+        boolean sellToStationNameSet =  Objects.nonNull(mybatisLocateSingleHopTradeFilter.getSellToStationName());
         
-        List<MybatisSingleHopEntity> results = new ArrayList<>();
+        List<MybatisSingleHopEntity> results = null;
         
-        switch (caseNumber) {
-             // BuySystem is null, SellSystem is defined but SellStation is null
-            case 2 ->  results.addAll(locateSingleHopTradeRouteRepository.findBestBuyWithinRangeOfSystem(mybatisLocateSingleHopTradeFilter));
-             
-             // BuySystem is null, SellSystem and SellStation are defined
-            case 3 ->  results.addAll(locateSingleHopTradeRouteRepository.findBestBuyWithinRangeOfStation(mybatisLocateSingleHopTradeFilter));
-            
-             // SellSystem is null, BuySystem is defined but BuyStation is null
-            case 4 ->  results.addAll(locateSingleHopTradeRouteRepository.findBestSellWithinRangeOfSystem(mybatisLocateSingleHopTradeFilter));
-            
-            // SellSystem is null, BuySystem and BuyStation are defined
-            case 5 ->  results.addAll(locateSingleHopTradeRouteRepository.findBestSellWithinRangeOfStation(mybatisLocateSingleHopTradeFilter));
-
-            // Both systems are defined but stations are null
-            case 6 ->  results.addAll(locateSingleHopTradeRouteRepository.findBestTradeBetweenSystems(mybatisLocateSingleHopTradeFilter));
-
-            // Both systems and both stations are defined
-            case 7 ->  results.addAll(locateSingleHopTradeRouteRepository.findBestTradeBetweenStations(mybatisLocateSingleHopTradeFilter));
-            
-            // Handle the case for 0 and any other unexpected case
-            default -> throw new RuntimeException("Error");
+        if (!buySystemNameSet && sellSystemNameSet && !sellToStationNameSet) {  // buySystem not set, buyStation should bet ignored, sellSystem set, sellStation not set
+            results = locateSingleHopTradeRouteRepository.findBestBuyWithinRangeOfSystem(mybatisLocateSingleHopTradeFilter);
+        }
+        if (!buySystemNameSet && sellSystemNameSet && sellToStationNameSet) { // buy system not set, buyStation should bet ignored, sellSystem set, sell station set
+            results = locateSingleHopTradeRouteRepository.findBestBuyWithinRangeOfStation(mybatisLocateSingleHopTradeFilter);
+        }
+        if (buySystemNameSet && !buyFromStationNameSet && !sellSystemNameSet) { // buy system set, buyStation not set, sellSystem not set, sellStation should bet ignored
+            results = locateSingleHopTradeRouteRepository.findBestSellWithinRangeOfSystem(mybatisLocateSingleHopTradeFilter);
+        }
+        if (buySystemNameSet && buyFromStationNameSet && !sellSystemNameSet) { // buy system set, buyStation set, sellSystem not set, sellStation should bet ignored
+            results = locateSingleHopTradeRouteRepository.findBestSellWithinRangeOfStation(mybatisLocateSingleHopTradeFilter);
+        }
+        if (buySystemNameSet && !buyFromStationNameSet && sellSystemNameSet && !sellToStationNameSet) { // buy system set, buyStation not set, sellSystem set, sellStation not set
+            results = locateSingleHopTradeRouteRepository.findBestTradeBetweenSystems(mybatisLocateSingleHopTradeFilter);
+        }
+        if (buySystemNameSet && buyFromStationNameSet && sellSystemNameSet && sellToStationNameSet) { // buy system set, buyStation set, sellSystem set, sellStation set
+            results = locateSingleHopTradeRouteRepository.findBestTradeBetweenStations(mybatisLocateSingleHopTradeFilter);
+        }
+        
+        if (Objects.isNull(results)) {
+            throw new IllegalArgumentException("No valid combination of input parameters was found");
         }
         
         return results.stream()
