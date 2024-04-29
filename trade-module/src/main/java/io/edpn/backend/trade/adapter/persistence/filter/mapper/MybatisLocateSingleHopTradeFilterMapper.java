@@ -6,16 +6,16 @@ import io.edpn.backend.trade.application.domain.filter.LocateSingleHopTradeFilte
 public class MybatisLocateSingleHopTradeFilterMapper {
     public MybatisLocateSingleHopTradeFilter map(LocateSingleHopTradeFilter locateSingleHopTradeFilter) {
         return MybatisLocateSingleHopTradeFilter.builder()
-                .xCoordinate(locateSingleHopTradeFilter.getXCoordinate())
-                .yCoordinate(locateSingleHopTradeFilter.getYCoordinate())
-                .zCoordinate(locateSingleHopTradeFilter.getZCoordinate())
+                .buyFromSystemName(locateSingleHopTradeFilter.getBuyFromSystemName())
+                .buyFromStationName(locateSingleHopTradeFilter.getBuyFromStationName())
+                .sellToSystemName(locateSingleHopTradeFilter.getSellToSystemName())
+                .sellToStationName(locateSingleHopTradeFilter.getSellToStationName())
                 .commodityDisplayNames(locateSingleHopTradeFilter.getCommodityDisplayNames())
                 .maxPriceAgeHours(locateSingleHopTradeFilter.getMaxPriceAgeHours())
                 .maxRouteDistance(locateSingleHopTradeFilter.getMaxRouteDistance())
                 .maxLandingPadSize(String.valueOf(locateSingleHopTradeFilter.getMaxLandingPadSize()))
                 .maxArrivalDistance(locateSingleHopTradeFilter.getMaxArrivalDistance())
-                .minSupply(locateSingleHopTradeFilter.getMinSupply())
-                .minDemand(locateSingleHopTradeFilter.getMinDemand())
+                .cargoCapacity(locateSingleHopTradeFilter.getCargoCapacity())
                 .includeSurfaceStations(locateSingleHopTradeFilter.getIncludeSurfaceStations())
                 .includeFleetCarriers(locateSingleHopTradeFilter.getIncludeFleetCarriers())
                 .build();

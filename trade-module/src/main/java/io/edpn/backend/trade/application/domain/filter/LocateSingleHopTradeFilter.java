@@ -15,17 +15,17 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class LocateSingleHopTradeFilter {
-    
-    private Double xCoordinate;
-    private Double yCoordinate;
-    private Double zCoordinate;
+    private String buyFromSystemName;
+    private String buyFromStationName;
+    private String sellToSystemName;
+    private String sellToStationName;
     private List<String> commodityDisplayNames; //if empty default all
     private Integer maxPriceAgeHours; //max 72 (for now)
     private Integer maxRouteDistance; //default 80
     private LandingPadSize maxLandingPadSize;
     private Integer maxArrivalDistance; //default < 5000
-    private Integer minSupply; //default 10000
-    private Integer minDemand; //default 10000
+    private Integer cargoCapacity;
     private Boolean includeSurfaceStations; //TODO
     private Boolean includeFleetCarriers; //TODO
+
 }

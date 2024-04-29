@@ -5,16 +5,16 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public record RestLocateSingleHopRouteFilterDto(
-        @NotNull Double xCoordinate,
-        @NotNull Double yCoordinate,
-        @NotNull Double zCoordinate,
+        String buyFromSystemName,
+        String buyFromStationName,
+        String sellToSystemName,
+        String sellToStationName,
         List<String> commodityDisplayNames,
         @NotNull Integer maxPriceAgeHours,
         @NotNull Integer maxRouteDistance,
         @NotNull String maxLandingPadSize,
         @NotNull Integer maxArrivalDistance,
-        @NotNull Integer minSupply,
-        @NotNull Integer minDemand,
+        @NotNull Integer cargoCapacity,
         @NotNull Boolean includeSurfaceStations,
         @NotNull Boolean includeFleetCarriers) {
 

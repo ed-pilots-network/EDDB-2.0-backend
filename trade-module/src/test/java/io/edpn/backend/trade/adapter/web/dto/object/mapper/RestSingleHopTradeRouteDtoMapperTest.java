@@ -50,8 +50,7 @@ public class RestSingleHopTradeRouteDtoMapperTest {
                 300L,
                 400L,
                 500L,
-                60.0,
-                70.0
+                60.0
         );
         
         when(validatedCommodityDtoMapper.map(domainObject.commodity())).thenReturn(mockCommodityDto);
@@ -69,7 +68,6 @@ public class RestSingleHopTradeRouteDtoMapperTest {
         assertThat(result.demand(), is(400L));
         assertThat(result.profit(), is(500L));
         assertThat(result.routeDistance(), is(60.0));
-        assertThat(result.distanceFromReferenceStation(), is(70.0));
         
         verify(validatedCommodityDtoMapper, times(1)).map(domainObject.commodity());
         verify(stationDtoMapper, times(1)).map(domainObject.buyFromStation());

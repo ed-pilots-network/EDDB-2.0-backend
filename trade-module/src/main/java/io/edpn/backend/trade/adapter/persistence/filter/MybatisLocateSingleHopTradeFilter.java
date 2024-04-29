@@ -19,16 +19,16 @@ import java.util.List;
 @EqualsAndHashCode
 public class MybatisLocateSingleHopTradeFilter {
     
-    private Double xCoordinate;
-    private Double yCoordinate;
-    private Double zCoordinate;
+    private String buyFromSystemName;
+    private String buyFromStationName;
+    private String sellToSystemName;
+    private String sellToStationName;
     private List<String> commodityDisplayNames;
     private Integer maxPriceAgeHours;
     private Integer maxRouteDistance;
     private String maxLandingPadSize;
     private Integer maxArrivalDistance;
-    private Integer minSupply;
-    private Integer minDemand;
+    private Integer cargoCapacity;
     private Boolean includeSurfaceStations;
     private Boolean includeFleetCarriers;
 }

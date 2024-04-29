@@ -27,31 +27,31 @@ public class RestLocateSingleHopRouteFilterDtoTest {
     @Test
     public void testMap_givenDto_shouldReturnDomainObject() {
         RestLocateSingleHopRouteFilterDto dto = new RestLocateSingleHopRouteFilterDto(
-                1.0,
-                2.0,
-                3.0,
+                "BuyFromSystem",
+                "BuyFromStation",
+                "SellToSystem",
+                "SellToStation",
                 List.of("Display", "Names"),
                 72,
                 80,
                 "MEDIUM",
                 5000,
-                10000,
-                10000,
+                720,
                 true,
                 false);
         
         LocateSingleHopTradeFilter domainObject = underTest.map(dto);
         
-        assertThat(domainObject.getXCoordinate(), is(1.0));
-        assertThat(domainObject.getYCoordinate(), is(2.0));
-        assertThat(domainObject.getZCoordinate(), is(3.0));
+        assertThat(domainObject.getBuyFromSystemName(), is("BuyFromSystem"));
+        assertThat(domainObject.getBuyFromStationName(), is("BuyFromStation"));
+        assertThat(domainObject.getSellToSystemName(), is("SellToSystem"));
+        assertThat(domainObject.getSellToStationName(), is("SellToStation"));
         assertThat(domainObject.getCommodityDisplayNames(), contains("Display", "Names"));
         assertThat(domainObject.getMaxPriceAgeHours(), is(72));
         assertThat(domainObject.getMaxRouteDistance(), is(80));
         assertThat(domainObject.getMaxLandingPadSize(), is(LandingPadSize.MEDIUM));
         assertThat(domainObject.getMaxArrivalDistance(), is(5000));
-        assertThat(domainObject.getMinSupply(), is(10000));
-        assertThat(domainObject.getMinDemand(), is(10000));
+        assertThat(domainObject.getCargoCapacity(), is(720));
         assertThat(domainObject.getIncludeSurfaceStations(), is(true));
         assertThat(domainObject.getIncludeFleetCarriers(), is(false));
     }

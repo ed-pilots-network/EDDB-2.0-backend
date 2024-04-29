@@ -16,6 +16,5 @@ public record RestSingleHopRouteDto(
         Long sellPrice,
         Long demand,
         Long profit,
-        Double routeDistance,
-        Double distanceFromReferenceStation) {
+        Double routeDistance) {
 }
