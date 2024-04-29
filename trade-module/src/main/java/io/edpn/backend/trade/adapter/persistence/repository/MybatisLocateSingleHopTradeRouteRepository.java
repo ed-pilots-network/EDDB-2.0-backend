@@ -396,7 +396,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                                station.system_id,
                                                station.arrival_distance
                                         FROM station
-                                                 INNER JOIN system ON station.system_id = system.id AND system.name = #{buyFromSystemName}),
+                                                 INNER JOIN system ON station.system_id = system.id AND system.name = #{sellToSystemName}),
             
                  commodity_list AS (
                      SELECT id, display_name, is_rare
@@ -474,8 +474,8 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                                station.system_id,
                                                station.arrival_distance
                                         FROM station
-                                                 INNER JOIN system ON station.system_id = system.id AND system.name = #{buyFromSystemName}
-                                        WHERE station.name = #{buyFromStationName}),
+                                                 INNER JOIN system ON station.system_id = system.id AND system.name = #{sellToSystemName}
+                                        WHERE station.name = #{sellToStationName}),
             
                  commodity_list AS (
                      SELECT id, display_name, is_rare
