@@ -390,13 +390,27 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                               system_id,
                                               arrival_distance
                                         FROM station
-                                                INNER JOIN system ON station.system_id = system.id AND system.name = #{buyFromSystemName}),
+                                                INNER JOIN system ON station.system_id = system.id
+                                        WHERE system.name = #{buyFromSystemName}
+                                           <if test='!includeFleetCarriers'>
+                                            AND station.name NOT SIMILAR TO '[A-Za-z0-9]{3}-[A-Za-z0-9]{3}'
+                                           </if>
+                                           <if test='maxLandingPadSize == "LARGE"'>AND max_landing_pad_size = 'LARGE'</if>
+                                           <if test='maxLandingPadSize == "MEDIUM"'>AND max_landing_pad_size IN ('MEDIUM', 'LARGE')</if>
+                                            AND #{maxArrivalDistance} >= arrival_distance),
             
                  sell_system AS (select station.id,
                                                station.system_id,
                                                station.arrival_distance
                                         FROM station
-                                                 INNER JOIN system ON station.system_id = system.id AND system.name = #{sellToSystemName}),
+                                                 INNER JOIN system ON station.system_id = system.id
+                                        WHERE system.name = #{sellToSystemName}
+                                           <if test='!includeFleetCarriers'>
+                                            AND station.name NOT SIMILAR TO '[A-Za-z0-9]{3}-[A-Za-z0-9]{3}'
+                                           </if>
+                                           <if test='maxLandingPadSize == "LARGE"'>AND max_landing_pad_size = 'LARGE'</if>
+                                           <if test='maxLandingPadSize == "MEDIUM"'>AND max_landing_pad_size IN ('MEDIUM', 'LARGE')</if>
+                                            AND #{maxArrivalDistance} >= arrival_distance),
             
                  commodity_list AS (
                      SELECT id, display_name, is_rare
