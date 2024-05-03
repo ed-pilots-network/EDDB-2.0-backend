@@ -23,6 +23,7 @@
     <include file="db/explorationmodule/changelog/create_station_maxlandingpadsize_data_request_table.xml"/>
     <include file="db/explorationmodule/changelog/create_station_table.xml"/>
     <include file="db/explorationmodule/changelog/create_station_arrivaldistance_data_request_table.xml"/>
+    <include file="db/explorationmodule/changelog/add_system_name_trigram_index.xml"/>
 
     <!-- views always last as they might depend on new columns -->
 
