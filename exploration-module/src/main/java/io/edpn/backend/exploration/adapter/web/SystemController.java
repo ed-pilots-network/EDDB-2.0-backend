@@ -39,7 +39,8 @@ public class SystemController {
     
     @Operation(summary = "Find station names by full System Name, will respond with list of names only")
     @GetMapping("/list-station-names")
-    public List<String> stationNamesBySystemName(String systemName){
+    public List<String> stationNamesBySystemName(
+            @Parameter(description = "Full case-sensitive system name", required = true) @RequestParam(name = "systemName") String systemName){
         
         return findStationNamesBySystemNameUseCase
                 .findStationNamesBySystemName(systemName)
