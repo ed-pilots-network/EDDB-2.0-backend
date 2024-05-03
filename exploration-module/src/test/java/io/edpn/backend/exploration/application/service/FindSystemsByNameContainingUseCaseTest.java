@@ -3,6 +3,7 @@ package io.edpn.backend.exploration.application.service;
 import io.edpn.backend.exploration.application.domain.System;
 import io.edpn.backend.exploration.application.domain.exception.ValidationException;
 import io.edpn.backend.exploration.application.port.incomming.FindSystemsByNameContainingUseCase;
+import io.edpn.backend.exploration.application.port.outgoing.station.LoadStationNamesBySystemNamePort;
 import io.edpn.backend.exploration.application.port.outgoing.system.LoadSystemsByNameContainingPort;
 import io.edpn.backend.exploration.application.validation.LoadByNameContainingValidator;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,18 +24,20 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class SystemControllerServiceTest {
+class FindSystemsByNameContainingUseCaseTest {
 
     @Mock
     private LoadSystemsByNameContainingPort loadSystemsByNameContainingPort;
     @Mock
     private LoadByNameContainingValidator loadByNameContainingValidator;
+    @Mock
+    private LoadStationNamesBySystemNamePort loadStationNamesBySystemNamePort;
 
     private FindSystemsByNameContainingUseCase underTest;
 
     @BeforeEach
     void setUp() {
-        underTest = new SystemControllerService(loadSystemsByNameContainingPort, loadByNameContainingValidator);
+        underTest = new SystemControllerService(loadSystemsByNameContainingPort, loadByNameContainingValidator, loadStationNamesBySystemNamePort);
     }
 
     @Test

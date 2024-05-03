@@ -76,4 +76,11 @@ public interface MybatisStationRepository {
             @Result(property = "services", column = "services", javaType = List.class, jdbcType = ARRAY, typeHandler = StringListToArrayTypeHandler.class),
     })
     Optional<MybatisStationEntity> findByIdentifier(@Param("systemName") String systemName, @Param("stationName") String stationName);
+    
+    @Select({
+            "SELECT station.name FROM station " +
+                    "INNER JOIN system ON station.system_id = system.id " +
+                    "WHERE system.name = #{systemName}"
+    })
+    List<String> findStationNamesBySystemName(@Param("systemName") String systemName);
 }
