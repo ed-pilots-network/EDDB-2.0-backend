@@ -1,11 +1,11 @@
 package io.edpn.backend.exploration.adapter.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.edpn.backend.exploration.adapter.persistence.SystemRepository;
 import io.edpn.backend.exploration.application.port.outgoing.body.SaveOrUpdateBodyPort;
 import io.edpn.backend.exploration.application.port.outgoing.message.SendMessagePort;
 import io.edpn.backend.exploration.application.port.outgoing.ring.SaveOrUpdateRingPort;
 import io.edpn.backend.exploration.application.port.outgoing.star.SaveOrUpdateStarPort;
+import io.edpn.backend.exploration.application.port.outgoing.station.LoadStationNamesBySystemNamePort;
 import io.edpn.backend.exploration.application.port.outgoing.station.LoadStationPort;
 import io.edpn.backend.exploration.application.port.outgoing.station.SaveOrUpdateStationPort;
 import io.edpn.backend.exploration.application.port.outgoing.stationarrivaldistancerequest.CreateIfNotExistsStationArrivalDistanceRequestPort;
@@ -19,6 +19,7 @@ import io.edpn.backend.exploration.application.port.outgoing.stationmaxlandingpa
 import io.edpn.backend.exploration.application.port.outgoing.stationmaxlandingpadsizerequest.LoadStationMaxLandingPadSizeRequestByIdentifierPort;
 import io.edpn.backend.exploration.application.port.outgoing.stationmaxlandingpadsizerequest.StationMaxLandingPadSizeResponseSender;
 import io.edpn.backend.exploration.application.port.outgoing.system.LoadSystemPort;
+import io.edpn.backend.exploration.application.port.outgoing.system.LoadSystemsByNameContainingPort;
 import io.edpn.backend.exploration.application.port.outgoing.system.SaveOrUpdateSystemPort;
 import io.edpn.backend.exploration.application.port.outgoing.systemcoordinaterequest.CreateIfNotExistsSystemCoordinateRequestPort;
 import io.edpn.backend.exploration.application.port.outgoing.systemcoordinaterequest.DeleteSystemCoordinateRequestPort;
@@ -191,11 +192,13 @@ public class ServiceConfig {
 
     @Bean(name = "explorationSystemControllerService")
     public SystemControllerService systemControllerService(
-            SystemRepository systemRepository,
-            LoadByNameContainingValidator loadByNameContainingValidator) {
+            LoadSystemsByNameContainingPort loadSystemsByNameContainingPort,
+            LoadByNameContainingValidator loadByNameContainingValidator,
+            LoadStationNamesBySystemNamePort loadStationNamesBySystemNamePort) {
         return new SystemControllerService(
-                systemRepository,
-                loadByNameContainingValidator);
+                loadSystemsByNameContainingPort,
+                loadByNameContainingValidator,
+                loadStationNamesBySystemNamePort);
     }
 
     @Bean("explorationSystemCoordinatesResponseSender")
