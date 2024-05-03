@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="add_system_name_trigram_index" author="daniel-j-mason">
+        <sql>
+            CREATE EXTENSION IF NOT EXISTS pg_trgm;
+            CREATE index system_name_gin_trgm_idx ON system using gin(name gin_trgm_ops)
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
