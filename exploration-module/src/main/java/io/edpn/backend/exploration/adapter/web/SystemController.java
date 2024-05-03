@@ -2,6 +2,7 @@ package io.edpn.backend.exploration.adapter.web;
 
 import io.edpn.backend.exploration.adapter.web.dto.RestSystemDto;
 import io.edpn.backend.exploration.adapter.web.dto.mapper.RestSystemDtoMapper;
+import io.edpn.backend.exploration.application.port.incomming.FindStationNamesBySystemNameUseCase;
 import io.edpn.backend.exploration.application.port.incomming.FindSystemsByNameContainingUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -19,6 +20,7 @@ import java.util.List;
 public class SystemController {
 
     final FindSystemsByNameContainingUseCase findSystemsByNameContainingUseCase;
+    final FindStationNamesBySystemNameUseCase findStationNamesBySystemNameUseCase;
     final FindSystemsByNameContainingInputValidator findSystemsByNameContainingInputValidator;
     final RestSystemDtoMapper restSystemDtoMapper;
 
@@ -32,6 +34,17 @@ public class SystemController {
         return findSystemsByNameContainingUseCase.findSystemsByNameContaining(subString, amount)
                 .stream()
                 .map(restSystemDtoMapper::map)
+                .toList();
+    }
+    
+    @Operation(summary = "Find station names by full System Name, will respond with list of names only")
+    @GetMapping("/list-station-names")
+    public List<String> stationNamesBySystemName(
+            @Parameter(description = "Full case-sensitive system name", required = true) @RequestParam(name = "systemName") String systemName){
+        
+        return findStationNamesBySystemNameUseCase
+                .findStationNamesBySystemName(systemName)
+                .stream()
                 .toList();
     }
 }
