@@ -1,27 +1,41 @@
 package io.edpn.backend.trade.adapter.persistence;
 
+import io.edpn.backend.trade.adapter.persistence.entity.MybatisLoopTradeEntity;
 import io.edpn.backend.trade.adapter.persistence.entity.MybatisSingleHopEntity;
+import io.edpn.backend.trade.adapter.persistence.entity.mapper.MybatisLoopTradeEntityMapper;
 import io.edpn.backend.trade.adapter.persistence.entity.mapper.MybatisSingleHopEntityMapper;
+import io.edpn.backend.trade.adapter.persistence.filter.MybatisLocateLoopTradeFilter;
 import io.edpn.backend.trade.adapter.persistence.filter.MybatisLocateSingleHopTradeFilter;
+import io.edpn.backend.trade.adapter.persistence.filter.mapper.MybatisLocateLoopTradeFilterMapper;
 import io.edpn.backend.trade.adapter.persistence.filter.mapper.MybatisLocateSingleHopTradeFilterMapper;
+import io.edpn.backend.trade.adapter.persistence.repository.MybatisLocateLoopTradeRouteRepository;
 import io.edpn.backend.trade.adapter.persistence.repository.MybatisLocateSingleHopTradeRouteRepository;
+import io.edpn.backend.trade.application.domain.LoopRoute;
 import io.edpn.backend.trade.application.domain.SingleHopRoute;
+import io.edpn.backend.trade.application.domain.filter.LocateLoopTradeFilter;
 import io.edpn.backend.trade.application.domain.filter.LocateSingleHopTradeFilter;
+import io.edpn.backend.trade.application.port.outgoing.locatetraderoute.LocateLoopTradeByFilterPort;
 import io.edpn.backend.trade.application.port.outgoing.locatetraderoute.LocateSingleHopTradeByFilterPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
 @RequiredArgsConstructor
 @Slf4j
 public class
-LocateTradeRouteRepository implements LocateSingleHopTradeByFilterPort {
+LocateTradeRouteRepository implements LocateSingleHopTradeByFilterPort, LocateLoopTradeByFilterPort {
     
     private final MybatisLocateSingleHopTradeRouteRepository locateSingleHopTradeRouteRepository;
     private final MybatisLocateSingleHopTradeFilterMapper locateSingleHopTradeFilterMapper;
     private final MybatisSingleHopEntityMapper singleHopEntityMapper;
+    
+    private final MybatisLocateLoopTradeRouteRepository locateLoopTradeRouteRepository;
+    private final MybatisLocateLoopTradeFilterMapper locateLoopTradeFilterMapper;
+    private final MybatisLoopTradeEntityMapper loopTradeEntityMapper;
     
     
     @Override
@@ -30,9 +44,9 @@ LocateTradeRouteRepository implements LocateSingleHopTradeByFilterPort {
         
         
         boolean buySystemNameSet = Objects.nonNull(mybatisLocateSingleHopTradeFilter.getBuyFromSystemName());
-        boolean sellSystemNameSet =  Objects.nonNull(mybatisLocateSingleHopTradeFilter.getSellToSystemName());
-        boolean buyFromStationNameSet =  Objects.nonNull(mybatisLocateSingleHopTradeFilter.getBuyFromStationName());
-        boolean sellToStationNameSet =  Objects.nonNull(mybatisLocateSingleHopTradeFilter.getSellToStationName());
+        boolean sellSystemNameSet = Objects.nonNull(mybatisLocateSingleHopTradeFilter.getSellToSystemName());
+        boolean buyFromStationNameSet = Objects.nonNull(mybatisLocateSingleHopTradeFilter.getBuyFromStationName());
+        boolean sellToStationNameSet = Objects.nonNull(mybatisLocateSingleHopTradeFilter.getSellToStationName());
         
         List<MybatisSingleHopEntity> results = null;
         
@@ -66,4 +80,48 @@ LocateTradeRouteRepository implements LocateSingleHopTradeByFilterPort {
     }
     
     
+    @Override
+    public List<LoopRoute> locateRoutesByFilter(LocateLoopTradeFilter locateLoopTradeFilter) {
+        MybatisLocateLoopTradeFilter mybatisLocateLoopTradeFilter = locateLoopTradeFilterMapper.map(locateLoopTradeFilter);
+        List<MybatisLoopTradeEntity> bestOneWayTrades = locateLoopTradeRouteRepository.locateFirstHalfLoop(mybatisLocateLoopTradeFilter);
+        
+        if (bestOneWayTrades == null) {
+            return new ArrayList<>();
+        }
+        
+        bestOneWayTrades.forEach(
+                trade -> {
+                    MybatisLocateSingleHopTradeFilter singleHopFilter = map(mybatisLocateLoopTradeFilter, trade.getFirstTripEntity());
+                    List<MybatisSingleHopEntity> returnTrip = locateSingleHopTradeRouteRepository.findBestTradeBetweenStations(singleHopFilter);
+                    trade.setReturnTripEntity(!returnTrip.isEmpty() ? returnTrip.getFirst() : null);
+                });
+        
+        return bestOneWayTrades.stream()
+                .filter(trade -> trade.getReturnTripEntity() != null)
+                .sorted(Comparator.comparing( (MybatisLoopTradeEntity trade) ->
+                        trade.getFirstTripEntity().getProfit() +
+                        trade.getReturnTripEntity().getProfit()).reversed()
+                )
+                .map(loopTradeEntityMapper::map)
+                .toList();
+    }
+    
+    private MybatisLocateSingleHopTradeFilter map(MybatisLocateLoopTradeFilter filter, MybatisSingleHopEntity firstTrip) {
+        
+        return MybatisLocateSingleHopTradeFilter.builder()
+                .buyFromSystemName(firstTrip.getSellToStationEntity().getSystem().getName())
+                .buyFromStationName(firstTrip.getSellToStationEntity().getName())
+                .sellToSystemName(firstTrip.getBuyFromStationEntity().getSystem().getName())
+                .sellToStationName(firstTrip.getBuyFromStationEntity().getName())
+                .commodityDisplayNames(filter.getCommodityDisplayNames())
+                .maxPriceAgeHours(filter.getMaxPriceAgeHours())
+                .maxRouteDistance(filter.getMaxRouteDistance())
+                .maxLandingPadSize(filter.getMaxLandingPadSize())
+                .maxArrivalDistance(filter.getMaxArrivalDistance())
+                .minSupply(filter.getMinSupply())
+                .minDemand(filter.getMinDemand())
+                .includeSurfaceStations(filter.getIncludeSurfaceStations())
+                .includeFleetCarriers(filter.getIncludeFleetCarriers())
+                .build();
+    }
 }

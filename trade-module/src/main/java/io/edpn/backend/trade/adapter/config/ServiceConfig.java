@@ -8,6 +8,7 @@ import io.edpn.backend.trade.application.port.outgoing.commodity.CreateOrLoadCom
 import io.edpn.backend.trade.application.port.outgoing.commoditymarketinfo.GetFullCommodityMarketInfoPort;
 import io.edpn.backend.trade.application.port.outgoing.kafka.SendKafkaMessagePort;
 import io.edpn.backend.trade.application.port.outgoing.locatecommodity.LocateCommodityByFilterPort;
+import io.edpn.backend.trade.application.port.outgoing.locatetraderoute.LocateLoopTradeByFilterPort;
 import io.edpn.backend.trade.application.port.outgoing.locatetraderoute.LocateSingleHopTradeByFilterPort;
 import io.edpn.backend.trade.application.port.outgoing.marketdatum.CreateWhenNotExistsMarketDatumPort;
 import io.edpn.backend.trade.application.port.outgoing.marketdatum.createOrUpdateExistingWhenNewerLatestMarketDatumPort;
@@ -89,8 +90,9 @@ public class ServiceConfig {
     
     @Bean(name = "tradeLocateTradeRouteService")
     public LocateTradeRouteService locateTradeRouteService(
-            LocateSingleHopTradeByFilterPort locateSingleHopTradeByFilterPort) {
-        return new LocateTradeRouteService(locateSingleHopTradeByFilterPort);
+            LocateSingleHopTradeByFilterPort locateSingleHopTradeByFilterPort,
+            LocateLoopTradeByFilterPort locateLoopTradeByFilterPort) {
+        return new LocateTradeRouteService(locateSingleHopTradeByFilterPort, locateLoopTradeByFilterPort);
     }
 
     @Bean(name = "tradeReceiveCommodityMessageUsecase")

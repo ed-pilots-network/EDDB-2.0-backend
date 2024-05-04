@@ -2,23 +2,29 @@ package io.edpn.backend.trade.adapter.web;
 
 import io.edpn.backend.trade.adapter.web.dto.filter.RestFindCommodityFilterDto;
 import io.edpn.backend.trade.adapter.web.dto.filter.RestLocateCommodityFilterDto;
+import io.edpn.backend.trade.adapter.web.dto.filter.RestLocateLoopRouteFilterDto;
 import io.edpn.backend.trade.adapter.web.dto.filter.RestLocateSingleHopRouteFilterDto;
 import io.edpn.backend.trade.adapter.web.dto.filter.mapper.RestFindCommodityFilterDtoMapper;
 import io.edpn.backend.trade.adapter.web.dto.filter.mapper.RestLocateCommodityFilterDtoMapper;
+import io.edpn.backend.trade.adapter.web.dto.filter.mapper.RestLocateLoopRouteFilterDtoMapper;
 import io.edpn.backend.trade.adapter.web.dto.filter.mapper.RestLocateSingleHopRouteFilterDtoMapper;
 import io.edpn.backend.trade.adapter.web.dto.object.RestCommodityMarketInfoDto;
 import io.edpn.backend.trade.adapter.web.dto.object.RestLocateCommodityDto;
+import io.edpn.backend.trade.adapter.web.dto.object.RestLoopRouteDto;
 import io.edpn.backend.trade.adapter.web.dto.object.RestSingleHopRouteDto;
 import io.edpn.backend.trade.adapter.web.dto.object.RestValidatedCommodityDto;
 import io.edpn.backend.trade.adapter.web.dto.object.mapper.RestCommodityMarketInfoDtoMapper;
 import io.edpn.backend.trade.adapter.web.dto.object.mapper.RestLocateCommodityDtoMapper;
+import io.edpn.backend.trade.adapter.web.dto.object.mapper.RestLoopRouteDtoMapper;
 import io.edpn.backend.trade.adapter.web.dto.object.mapper.RestSingleHopRouteDtoMapper;
 import io.edpn.backend.trade.adapter.web.dto.object.mapper.RestValidatedCommodityDtoMapper;
 import io.edpn.backend.trade.application.domain.filter.FindCommodityFilter;
 import io.edpn.backend.trade.application.domain.filter.LocateCommodityFilter;
+import io.edpn.backend.trade.application.domain.filter.LocateLoopTradeFilter;
 import io.edpn.backend.trade.application.domain.filter.LocateSingleHopTradeFilter;
 import io.edpn.backend.trade.application.port.incomming.commoditymarketinfo.GetFullCommodityMarketInfoUseCase;
 import io.edpn.backend.trade.application.port.incomming.locatecommodity.LocateCommodityUseCase;
+import io.edpn.backend.trade.application.port.incomming.locatetraderoute.LocateLoopTradeRouteUseCase;
 import io.edpn.backend.trade.application.port.incomming.locatetraderoute.LocateSingleHopTradeRouteUseCase;
 import io.edpn.backend.trade.application.port.incomming.validatedcommodity.FindAllValidatedCommodityUseCase;
 import io.edpn.backend.trade.application.port.incomming.validatedcommodity.FindValidatedCommodityByFilterUseCase;
@@ -41,15 +47,18 @@ public class TradeModuleController {
     private final LocateCommodityUseCase locateCommodityUseCase;
     private final GetFullCommodityMarketInfoUseCase getFullCommodityMarketInfoUseCase;
     private final LocateSingleHopTradeRouteUseCase locateSingleHopTradeRouteUseCase;
+    private final LocateLoopTradeRouteUseCase locateLoopTradeRouteUseCase;
     
     private final RestValidatedCommodityDtoMapper restValidatedCommodityDtoMapper;
     private final RestLocateCommodityDtoMapper restLocateCommodityDtoMapper;
     private final RestCommodityMarketInfoDtoMapper restCommodityMarketInfoDtoMapper;
     private final RestSingleHopRouteDtoMapper restSingleHopRouteDtoMapper;
+    private final RestLoopRouteDtoMapper restLoopRouteDtoMapper;
 
     private final RestFindCommodityFilterDtoMapper restFindCommodityFilterDtoMapper;
     private final RestLocateCommodityFilterDtoMapper restLocateCommodityFilterDtoMapper;
     private final RestLocateSingleHopRouteFilterDtoMapper restLocateSingleHopRouteFilterDtoMapper;
+    private final RestLocateLoopRouteFilterDtoMapper restLocateLoopRouteFilterDtoMapper;
 
     @GetMapping("/commodity")
     public List<RestValidatedCommodityDto> findAll() {
@@ -106,5 +115,17 @@ public class TradeModuleController {
                 .stream()
                 .map(restSingleHopRouteDtoMapper::map)
                 .toList();
+    }
+    
+    @GetMapping("/locate-trade/loop")
+    public List<RestLoopRouteDto> locateLooptradeWithFilter(RestLocateLoopRouteFilterDto locateLoopRouteFilterDto){
+        LocateLoopTradeFilter locateLoopTradeFilter = restLocateLoopRouteFilterDtoMapper.map(locateLoopRouteFilterDto);
+        
+        return locateLoopTradeRouteUseCase
+                .locateRoutesOrderByProfit(locateLoopTradeFilter)
+                .stream()
+                .map(restLoopRouteDtoMapper::map)
+                .toList();
+        
     }
 }
