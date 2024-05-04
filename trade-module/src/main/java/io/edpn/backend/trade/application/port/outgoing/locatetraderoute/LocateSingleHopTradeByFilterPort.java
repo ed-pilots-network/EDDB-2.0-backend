@@ -5,7 +5,7 @@ import io.edpn.backend.trade.application.domain.filter.LocateSingleHopTradeFilte
 
 import java.util.List;
 
-public interface LocateSingleHopeTradeByFilterPort {
+public interface LocateSingleHopTradeByFilterPort {
     
     List<SingleHopRoute> locateRoutesByFilter(LocateSingleHopTradeFilter locateSingleHopTradeFilter);
 }

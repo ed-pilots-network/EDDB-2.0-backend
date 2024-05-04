@@ -8,7 +8,7 @@ import io.edpn.backend.trade.adapter.persistence.filter.mapper.MybatisLocateSing
 import io.edpn.backend.trade.adapter.persistence.repository.MybatisLocateSingleHopTradeRouteRepository;
 import io.edpn.backend.trade.application.domain.SingleHopRoute;
 import io.edpn.backend.trade.application.domain.filter.LocateSingleHopTradeFilter;
-import io.edpn.backend.trade.application.port.outgoing.locatetraderoute.LocateSingleHopeTradeByFilterPort;
+import io.edpn.backend.trade.application.port.outgoing.locatetraderoute.LocateSingleHopTradeByFilterPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +38,7 @@ public class LocateSingleHopTradeByFilterPortTest {
     @Mock
     private MybatisLocateSingleHopTradeFilterMapper mybatisLocateSingleHopTradeFilterMapper;
     
-    private LocateSingleHopeTradeByFilterPort underTest;
+    private LocateSingleHopTradeByFilterPort underTest;
     
     @BeforeEach
     public void setup() {
