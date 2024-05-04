@@ -21,7 +21,8 @@ public class RestLocateSingleHopRouteFilterDtoMapper {
                 .maxRouteDistance(locateSingleHopRouteFilterDto.maxRouteDistance())
                 .maxLandingPadSize(LandingPadSize.valueOf(locateSingleHopRouteFilterDto.maxLandingPadSize()))
                 .maxArrivalDistance(locateSingleHopRouteFilterDto.maxArrivalDistance())
-                .cargoCapacity(locateSingleHopRouteFilterDto.cargoCapacity())
+                .minDemand(locateSingleHopRouteFilterDto.cargoCapacity() * 4) // no loss on sale
+                .minSupply(locateSingleHopRouteFilterDto.cargoCapacity()) // enough supply for full cargo hold
                 .includeSurfaceStations(locateSingleHopRouteFilterDto.includeSurfaceStations())
                 .includeFleetCarriers(locateSingleHopRouteFilterDto.includeFleetCarriers())
                 .build();

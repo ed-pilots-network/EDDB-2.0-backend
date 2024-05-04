@@ -28,7 +28,8 @@ public class MybatisLocateSingleHopTradeFilter {
     private Integer maxRouteDistance;
     private String maxLandingPadSize;
     private Integer maxArrivalDistance;
-    private Integer cargoCapacity;
+    private Integer minSupply;
+    private Integer minDemand;
     private Boolean includeSurfaceStations;
     private Boolean includeFleetCarriers;
 }
