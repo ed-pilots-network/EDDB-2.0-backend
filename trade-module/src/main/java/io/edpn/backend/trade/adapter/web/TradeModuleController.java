@@ -29,6 +29,7 @@ import io.edpn.backend.trade.application.port.incomming.locatetraderoute.LocateS
 import io.edpn.backend.trade.application.port.incomming.validatedcommodity.FindAllValidatedCommodityUseCase;
 import io.edpn.backend.trade.application.port.incomming.validatedcommodity.FindValidatedCommodityByFilterUseCase;
 import io.edpn.backend.trade.application.port.incomming.validatedcommodity.FindValidatedCommodityByNameUseCase;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -106,6 +107,7 @@ public class TradeModuleController {
                 .toList();
     }
     
+    @Operation(summary = "Find one directional trade with filter. At least one system must be specified, station cannot be specified without system, cargo evaluates to a minSupply = capacity and a minDemand = 720 * 4 (or 0) for lossless trades.")
     @GetMapping("/locate-trade/single")
     public List<RestSingleHopRouteDto> locateSingleHopTradeWithFilter(RestLocateSingleHopRouteFilterDto locateSingleHopeRouteFilterDto) {
         LocateSingleHopTradeFilter locateSingleHopTradeFilter = restLocateSingleHopRouteFilterDtoMapper.map(locateSingleHopeRouteFilterDto);
@@ -118,7 +120,7 @@ public class TradeModuleController {
     }
     
     @GetMapping("/locate-trade/loop")
-    public List<RestLoopRouteDto> locateLooptradeWithFilter(RestLocateLoopRouteFilterDto locateLoopRouteFilterDto){
+    public List<RestLoopRouteDto> locateLoopTradeWithFilter(RestLocateLoopRouteFilterDto locateLoopRouteFilterDto){
         LocateLoopTradeFilter locateLoopTradeFilter = restLocateLoopRouteFilterDtoMapper.map(locateLoopRouteFilterDto);
         
         return locateLoopTradeRouteUseCase
