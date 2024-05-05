@@ -2,9 +2,11 @@ package io.edpn.backend.trade.adapter.config;
 
 import io.edpn.backend.trade.adapter.web.dto.filter.mapper.RestFindCommodityFilterDtoMapper;
 import io.edpn.backend.trade.adapter.web.dto.filter.mapper.RestLocateCommodityFilterDtoMapper;
+import io.edpn.backend.trade.adapter.web.dto.filter.mapper.RestLocateLoopRouteFilterDtoMapper;
 import io.edpn.backend.trade.adapter.web.dto.filter.mapper.RestLocateSingleHopRouteFilterDtoMapper;
 import io.edpn.backend.trade.adapter.web.dto.object.mapper.RestCommodityMarketInfoDtoMapper;
 import io.edpn.backend.trade.adapter.web.dto.object.mapper.RestLocateCommodityDtoMapper;
+import io.edpn.backend.trade.adapter.web.dto.object.mapper.RestLoopRouteDtoMapper;
 import io.edpn.backend.trade.adapter.web.dto.object.mapper.RestSingleHopRouteDtoMapper;
 import io.edpn.backend.trade.adapter.web.dto.object.mapper.RestStationDtoMapper;
 import io.edpn.backend.trade.adapter.web.dto.object.mapper.RestSystemDtoMapper;
@@ -43,6 +45,13 @@ public class WebDtoMapperConfig {
     ) {
         return new RestSingleHopRouteDtoMapper(restValidatedCommodityDtoMapper, restStationDtoMapper);
     }
+    
+    @Bean(name = "tradeLoopRouteMapper")
+    public RestLoopRouteDtoMapper loopRouteDtoMapper(
+            RestSingleHopRouteDtoMapper restSingleHopRouteDtoMapper
+    ) {
+        return new RestLoopRouteDtoMapper(restSingleHopRouteDtoMapper);
+    }
 
     @Bean(name = "tradeLocateCommodityDtoMapper")
     public RestLocateCommodityDtoMapper locateCommodityDtoMapper(
@@ -66,5 +75,10 @@ public class WebDtoMapperConfig {
     @Bean(name = "tradeLocateSingleHopRouteFilterMapper")
     public RestLocateSingleHopRouteFilterDtoMapper locateSingleHopRouteFilterDtoMapper(){
         return new RestLocateSingleHopRouteFilterDtoMapper();
+    }
+    
+    @Bean(name = "tradeLocateLoopRouteFilterMapper")
+    public RestLocateLoopRouteFilterDtoMapper locateLoopRouteFilterDtoMapper(){
+        return new RestLocateLoopRouteFilterDtoMapper();
     }
 }
