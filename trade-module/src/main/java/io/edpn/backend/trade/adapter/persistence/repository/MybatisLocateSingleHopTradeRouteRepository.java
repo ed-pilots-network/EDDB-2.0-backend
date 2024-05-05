@@ -98,6 +98,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                 AND 100 >= buy_market.rn
             WHERE (sell_market.sell_price - buy_market.buy_price) > 0
             ORDER BY profit DESC, buy_market.arrival_distance + sell_arrival_distance
+            LIMIT 50
             </script>""")
     @Results(id = "findSingleHopTradeResultMap", value = {
             @Result(property = "commodityEntity", column = "commodity_id", javaType = MybatisValidatedCommodityEntity.class,
@@ -201,6 +202,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                 AND 100 >= buy_market.rn
             WHERE (sell_market.sell_price - buy_market.buy_price) > 0
             ORDER BY profit DESC, buy_market.arrival_distance + sell_arrival_distance
+            LIMIT 50
             </script>""")
     @ResultMap("findSingleHopTradeResultMap")
     List<MybatisSingleHopEntity> findBestBuyWithinRangeOfStation(MybatisLocateSingleHopTradeFilter locateSingleHopTradeFilter);
@@ -290,6 +292,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                 AND 100 >= sell_market.rn
             WHERE (sell_market.sell_price - buy_market.buy_price) > 0
             ORDER BY profit DESC, buy_market.arrival_distance + sell_arrival_distance
+            LIMIT 50
             </script>""")
     @ResultMap("findSingleHopTradeResultMap")
     List<MybatisSingleHopEntity> findBestSellWithinRangeOfSystem(MybatisLocateSingleHopTradeFilter locateSingleHopTradeFilter);
@@ -380,6 +383,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                 AND 100 >= sell_market.rn
             WHERE (sell_market.sell_price - buy_market.buy_price) > 0
             ORDER BY profit DESC, buy_market.arrival_distance + sell_arrival_distance
+            LIMIT 50
             </script>""")
     @ResultMap("findSingleHopTradeResultMap")
     List<MybatisSingleHopEntity> findBestSellWithinRangeOfStation(MybatisLocateSingleHopTradeFilter locateSingleHopTradeFilter);
@@ -471,6 +475,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                      AND buy_market.buy_station_id != sell_market.sell_station_id
             WHERE (sell_market.sell_price - buy_market.buy_price) > 0
             ORDER BY profit DESC, buy_market.arrival_distance + sell_arrival_distance
+            LIMIT 50
             </script>""")
     @ResultMap("findSingleHopTradeResultMap")
     List<MybatisSingleHopEntity> findBestTradeBetweenSystems(MybatisLocateSingleHopTradeFilter locateSingleHopTradeFilter);
@@ -550,6 +555,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                      AND buy_market.buy_station_id != sell_market.sell_station_id
             WHERE (sell_market.sell_price - buy_market.buy_price) > 0
             ORDER BY profit DESC, buy_market.arrival_distance + sell_arrival_distance
+            LIMIT 50
             </script>""")
     @ResultMap("findSingleHopTradeResultMap")
     List<MybatisSingleHopEntity> findBestTradeBetweenStations(MybatisLocateSingleHopTradeFilter locateSingleHopTradeFilter);
