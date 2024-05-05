@@ -85,22 +85,24 @@ LocateTradeRouteRepository implements LocateSingleHopTradeByFilterPort, LocateLo
         MybatisLocateLoopTradeFilter mybatisLocateLoopTradeFilter = locateLoopTradeFilterMapper.map(locateLoopTradeFilter);
         List<MybatisLoopTradeEntity> bestOneWayTrades = locateLoopTradeRouteRepository.locateFirstHalfLoop(mybatisLocateLoopTradeFilter);
         
-        if (bestOneWayTrades == null) {
-            return new ArrayList<>();
+        if (bestOneWayTrades.isEmpty()) {
+            new ArrayList<>();
         }
         
         bestOneWayTrades.forEach(
                 trade -> {
-                    MybatisLocateSingleHopTradeFilter singleHopFilter = map(mybatisLocateLoopTradeFilter, trade.getFirstTripEntity());
-                    List<MybatisSingleHopEntity> returnTrip = locateSingleHopTradeRouteRepository.findBestTradeBetweenStations(singleHopFilter);
+                    MybatisLocateSingleHopTradeFilter returnTripFilter = map(mybatisLocateLoopTradeFilter, trade.getFirstTripEntity());
+                    List<MybatisSingleHopEntity> returnTrip = locateSingleHopTradeRouteRepository.findBestTradeBetweenStations(returnTripFilter);
                     trade.setReturnTripEntity(!returnTrip.isEmpty() ? returnTrip.getFirst() : null);
                 });
         
         return bestOneWayTrades.stream()
                 .filter(trade -> trade.getReturnTripEntity() != null)
-                .sorted(Comparator.comparing( (MybatisLoopTradeEntity trade) ->
+                .sorted(Comparator.comparing(
+                        (MybatisLoopTradeEntity trade) ->
                         trade.getFirstTripEntity().getProfit() +
-                        trade.getReturnTripEntity().getProfit()).reversed()
+                        trade.getReturnTripEntity().getProfit())
+                        .reversed()
                 )
                 .map(loopTradeEntityMapper::map)
                 .toList();
