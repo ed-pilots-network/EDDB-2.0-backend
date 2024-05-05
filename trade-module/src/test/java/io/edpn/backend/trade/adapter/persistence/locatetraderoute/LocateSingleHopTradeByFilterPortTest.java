@@ -2,9 +2,12 @@ package io.edpn.backend.trade.adapter.persistence.locatetraderoute;
 
 import io.edpn.backend.trade.adapter.persistence.LocateTradeRouteRepository;
 import io.edpn.backend.trade.adapter.persistence.entity.MybatisSingleHopEntity;
+import io.edpn.backend.trade.adapter.persistence.entity.mapper.MybatisLoopTradeEntityMapper;
 import io.edpn.backend.trade.adapter.persistence.entity.mapper.MybatisSingleHopEntityMapper;
 import io.edpn.backend.trade.adapter.persistence.filter.MybatisLocateSingleHopTradeFilter;
+import io.edpn.backend.trade.adapter.persistence.filter.mapper.MybatisLocateLoopTradeFilterMapper;
 import io.edpn.backend.trade.adapter.persistence.filter.mapper.MybatisLocateSingleHopTradeFilterMapper;
+import io.edpn.backend.trade.adapter.persistence.repository.MybatisLocateLoopTradeRouteRepository;
 import io.edpn.backend.trade.adapter.persistence.repository.MybatisLocateSingleHopTradeRouteRepository;
 import io.edpn.backend.trade.application.domain.SingleHopRoute;
 import io.edpn.backend.trade.application.domain.filter.LocateSingleHopTradeFilter;
@@ -38,11 +41,20 @@ public class LocateSingleHopTradeByFilterPortTest {
     @Mock
     private MybatisLocateSingleHopTradeFilterMapper mybatisLocateSingleHopTradeFilterMapper;
     
+    @Mock
+    private MybatisLocateLoopTradeRouteRepository locateLoopTradeRouteRepository;
+    
+    @Mock
+    private MybatisLocateLoopTradeFilterMapper locateLoopTradeFilterMapper;
+    
+    @Mock
+    private MybatisLoopTradeEntityMapper loopTradeEntityMapper;
+    
     private LocateSingleHopTradeByFilterPort underTest;
     
     @BeforeEach
     public void setup() {
-        underTest = new LocateTradeRouteRepository(mybatisLocateSingleHopTradeRouteRepository, mybatisLocateSingleHopTradeFilterMapper, mybatisSingleHopEntityMapper);
+        underTest = new LocateTradeRouteRepository(mybatisLocateSingleHopTradeRouteRepository, mybatisLocateSingleHopTradeFilterMapper, mybatisSingleHopEntityMapper, locateLoopTradeRouteRepository, locateLoopTradeFilterMapper, loopTradeEntityMapper);
     }
     
     @Test
@@ -54,7 +66,8 @@ public class LocateSingleHopTradeByFilterPortTest {
                 .maxRouteDistance(80)
                 .maxLandingPadSize("SMALL")
                 .maxArrivalDistance(5000)
-                .cargoCapacity(720)
+                .minDemand(10000)
+                .minSupply(10000)
                 .includeSurfaceStations(true)
                 .includeFleetCarriers(false)
                 .build();
@@ -88,7 +101,8 @@ public class LocateSingleHopTradeByFilterPortTest {
                 .maxRouteDistance(80)
                 .maxLandingPadSize("SMALL")
                 .maxArrivalDistance(5000)
-                .cargoCapacity(720)
+                .minDemand(10000)
+                .minSupply(10000)
                 .includeSurfaceStations(true)
                 .includeFleetCarriers(false)
                 .build();
@@ -121,7 +135,8 @@ public class LocateSingleHopTradeByFilterPortTest {
                 .maxRouteDistance(80)
                 .maxLandingPadSize("SMALL")
                 .maxArrivalDistance(5000)
-                .cargoCapacity(720)
+                .minDemand(10000)
+                .minSupply(10000)
                 .includeSurfaceStations(true)
                 .includeFleetCarriers(false)
                 .build();
@@ -155,7 +170,8 @@ public class LocateSingleHopTradeByFilterPortTest {
                 .maxRouteDistance(80)
                 .maxLandingPadSize("SMALL")
                 .maxArrivalDistance(5000)
-                .cargoCapacity(720)
+                .minDemand(10000)
+                .minSupply(10000)
                 .includeSurfaceStations(true)
                 .includeFleetCarriers(false)
                 .build();
@@ -189,7 +205,8 @@ public class LocateSingleHopTradeByFilterPortTest {
                 .maxRouteDistance(80)
                 .maxLandingPadSize("SMALL")
                 .maxArrivalDistance(5000)
-                .cargoCapacity(720)
+                .minDemand(10000)
+                .minSupply(10000)
                 .includeSurfaceStations(true)
                 .includeFleetCarriers(false)
                 .build();
@@ -225,7 +242,8 @@ public class LocateSingleHopTradeByFilterPortTest {
                 .maxRouteDistance(80)
                 .maxLandingPadSize("SMALL")
                 .maxArrivalDistance(5000)
-                .cargoCapacity(720)
+                .minDemand(10000)
+                .minSupply(10000)
                 .includeSurfaceStations(true)
                 .includeFleetCarriers(false)
                 .build();
