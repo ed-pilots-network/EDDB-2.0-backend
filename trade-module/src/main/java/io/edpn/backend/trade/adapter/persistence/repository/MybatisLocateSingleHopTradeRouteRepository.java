@@ -63,7 +63,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                          INNER JOIN stations_in_range ON station_id = stations_in_range.id
                                          INNER JOIN system ON stations_in_range.system_id = system.id
                                          INNER JOIN commodity_list ON commodity_id = commodity_list.id AND display_name IS NOT null
-                                WHERE stock > #{cargoCapacity}
+                                WHERE stock > #{minSupply}
                                   AND commodity_list.is_rare = false
                                   AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours})
                                   AND buy_price IS NOT null),
@@ -79,7 +79,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                            INNER JOIN stations_in_system ON station_id = stations_in_system.id
                                            INNER JOIN system on stations_in_system.system_id = system.id
                                            INNER JOIN commodity ON commodity_id = commodity.id AND display_name IS NOT null
-                                  WHERE (demand = 0 OR demand > (#{cargoCapacity} * 4))
+                                  WHERE (demand = 0 OR demand > #{minDemand})
                                     AND commodity.is_rare = false
                                     AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours}))
             
@@ -98,6 +98,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                 AND 100 >= buy_market.rn
             WHERE (sell_market.sell_price - buy_market.buy_price) > 0
             ORDER BY profit DESC, buy_market.arrival_distance + sell_arrival_distance
+            LIMIT 50
             </script>""")
     @Results(id = "findSingleHopTradeResultMap", value = {
             @Result(property = "commodityEntity", column = "commodity_id", javaType = MybatisValidatedCommodityEntity.class,
@@ -166,7 +167,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                          INNER JOIN stations_in_range ON station_id = stations_in_range.id
                                          INNER JOIN system ON stations_in_range.system_id = system.id
                                          INNER JOIN commodity_list ON commodity_id = commodity_list.id AND display_name IS NOT null
-                                WHERE stock > #{cargoCapacity}
+                                WHERE stock > #{minSupply}
                                   AND commodity_list.is_rare = false
                                   AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours})
                                   AND buy_price IS NOT null),
@@ -182,7 +183,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                            INNER JOIN reference_station ON station_id = reference_station.id
                                            INNER JOIN system on reference_station.system_id = system.id
                                            INNER JOIN commodity ON commodity_id = commodity.id AND display_name IS NOT null
-                                  WHERE (demand = 0 OR demand > (#{cargoCapacity} * 4))
+                                  WHERE (demand = 0 OR demand > #{minDemand})
                                     AND commodity.is_rare = false
                                     AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours}))
             
@@ -201,6 +202,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                 AND 100 >= buy_market.rn
             WHERE (sell_market.sell_price - buy_market.buy_price) > 0
             ORDER BY profit DESC, buy_market.arrival_distance + sell_arrival_distance
+            LIMIT 50
             </script>""")
     @ResultMap("findSingleHopTradeResultMap")
     List<MybatisSingleHopEntity> findBestBuyWithinRangeOfStation(MybatisLocateSingleHopTradeFilter locateSingleHopTradeFilter);
@@ -253,7 +255,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                          INNER JOIN reference_station ON station_id = reference_station.id
                                          INNER JOIN system ON reference_station.system_id = system.id
                                          INNER JOIN commodity_list ON commodity_id = commodity_list.id AND display_name IS NOT null
-                                WHERE stock > #{cargoCapacity}
+                                WHERE stock > #{minSupply}
                                   AND commodity_list.is_rare = false
                                   AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours})
                                   AND buy_price IS NOT null),
@@ -271,7 +273,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                            INNER JOIN stations_in_range ON station_id = stations_in_range.id
                                            INNER JOIN system on stations_in_range.system_id = system.id
                                            INNER JOIN commodity ON commodity_id = commodity.id AND display_name IS NOT null
-                                  WHERE (demand = 0 OR demand > (#{cargoCapacity} * 4))
+                                  WHERE (demand = 0 OR demand > #{minDemand})
                                     AND commodity.is_rare = false
                                     AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours}))
             
@@ -290,6 +292,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                 AND 100 >= sell_market.rn
             WHERE (sell_market.sell_price - buy_market.buy_price) > 0
             ORDER BY profit DESC, buy_market.arrival_distance + sell_arrival_distance
+            LIMIT 50
             </script>""")
     @ResultMap("findSingleHopTradeResultMap")
     List<MybatisSingleHopEntity> findBestSellWithinRangeOfSystem(MybatisLocateSingleHopTradeFilter locateSingleHopTradeFilter);
@@ -343,7 +346,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                          INNER JOIN reference_station ON station_id = reference_station.id
                                          INNER JOIN system ON reference_station.system_id = system.id
                                          INNER JOIN commodity_list ON commodity_id = commodity_list.id AND display_name IS NOT null
-                                WHERE stock > #{cargoCapacity}
+                                WHERE stock > #{minSupply}
                                   AND commodity_list.is_rare = false
                                   AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours})
                                   AND buy_price IS NOT null),
@@ -361,7 +364,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                            INNER JOIN stations_in_range ON station_id = stations_in_range.id
                                            INNER JOIN system on stations_in_range.system_id = system.id
                                            INNER JOIN commodity ON commodity_id = commodity.id AND display_name IS NOT null
-                                  WHERE (demand = 0 OR demand > (#{cargoCapacity} * 4))
+                                  WHERE (demand = 0 OR demand > #{minDemand})
                                     AND commodity.is_rare = false
                                     AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours}))
             
@@ -380,6 +383,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                 AND 100 >= sell_market.rn
             WHERE (sell_market.sell_price - buy_market.buy_price) > 0
             ORDER BY profit DESC, buy_market.arrival_distance + sell_arrival_distance
+            LIMIT 50
             </script>""")
     @ResultMap("findSingleHopTradeResultMap")
     List<MybatisSingleHopEntity> findBestSellWithinRangeOfStation(MybatisLocateSingleHopTradeFilter locateSingleHopTradeFilter);
@@ -437,7 +441,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                          INNER JOIN buy_system ON station_id = buy_system.id
                                          INNER JOIN system ON buy_system.system_id = system.id
                                          INNER JOIN commodity_list ON commodity_id = commodity_list.id AND display_name IS NOT null
-                                WHERE stock > #{cargoCapacity}
+                                WHERE stock > #{minSupply}
                                   AND commodity_list.is_rare = false
                                   AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours})
                                   AND buy_price IS NOT null),
@@ -453,7 +457,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                            INNER JOIN sell_system ON station_id = sell_system.id
                                            INNER JOIN system on sell_system.system_id = system.id
                                            INNER JOIN commodity ON commodity_id = commodity.id AND display_name IS NOT null
-                                  WHERE (demand = 0 OR demand > (#{cargoCapacity} * 4))
+                                  WHERE (demand = 0 OR demand > #{minDemand})
                                     AND commodity.is_rare = false
                                     AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours}))
             
@@ -471,6 +475,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                      AND buy_market.buy_station_id != sell_market.sell_station_id
             WHERE (sell_market.sell_price - buy_market.buy_price) > 0
             ORDER BY profit DESC, buy_market.arrival_distance + sell_arrival_distance
+            LIMIT 50
             </script>""")
     @ResultMap("findSingleHopTradeResultMap")
     List<MybatisSingleHopEntity> findBestTradeBetweenSystems(MybatisLocateSingleHopTradeFilter locateSingleHopTradeFilter);
@@ -516,7 +521,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                          INNER JOIN buy_station ON station_id = buy_station.id
                                          INNER JOIN system ON buy_station.system_id = system.id
                                          INNER JOIN commodity_list ON commodity_id = commodity_list.id AND display_name IS NOT null
-                                WHERE stock > #{cargoCapacity}
+                                WHERE stock > #{minSupply}
                                   AND commodity_list.is_rare = false
                                   AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours})
                                   AND buy_price IS NOT null),
@@ -532,7 +537,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                            INNER JOIN sell_station ON station_id = sell_station.id
                                            INNER JOIN system on sell_station.system_id = system.id
                                            INNER JOIN commodity ON commodity_id = commodity.id AND display_name IS NOT null
-                                  WHERE (demand = 0 OR demand > (#{cargoCapacity} * 4))
+                                  WHERE (demand = 0 OR demand > #{minDemand})
                                     AND commodity.is_rare = false
                                     AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours}))
             
@@ -550,7 +555,9 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                      AND buy_market.buy_station_id != sell_market.sell_station_id
             WHERE (sell_market.sell_price - buy_market.buy_price) > 0
             ORDER BY profit DESC, buy_market.arrival_distance + sell_arrival_distance
+            LIMIT 50
             </script>""")
     @ResultMap("findSingleHopTradeResultMap")
     List<MybatisSingleHopEntity> findBestTradeBetweenStations(MybatisLocateSingleHopTradeFilter locateSingleHopTradeFilter);
+
 }

@@ -3,6 +3,7 @@ package io.edpn.backend.exploration.adapter.web;
 import io.edpn.backend.exploration.adapter.web.dto.RestSystemDto;
 import io.edpn.backend.exploration.adapter.web.dto.mapper.RestSystemDtoMapper;
 import io.edpn.backend.exploration.application.domain.System;
+import io.edpn.backend.exploration.application.port.incomming.FindStationNamesBySystemNameUseCase;
 import io.edpn.backend.exploration.application.port.incomming.FindSystemsByNameContainingUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,8 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -26,15 +29,17 @@ public class SystemControllerPortTest {
     @Mock
     private FindSystemsByNameContainingUseCase findSystemsByNameContainingUseCase;
     @Mock
+    private FindStationNamesBySystemNameUseCase findStationNamesBySystemNameUseCase;
+    @Mock
     private FindSystemsByNameContainingInputValidator findSystemsByNameContainingInputValidator;
     @Mock
     private RestSystemDtoMapper restSystemDtoMapper;
-
+    
     private SystemController underTest;
 
     @BeforeEach
     void setUp() {
-        underTest = new SystemController(findSystemsByNameContainingUseCase, findSystemsByNameContainingInputValidator, restSystemDtoMapper);
+        underTest = new SystemController(findSystemsByNameContainingUseCase, findStationNamesBySystemNameUseCase, findSystemsByNameContainingInputValidator, restSystemDtoMapper);
     }
 
     @Test
@@ -79,4 +84,41 @@ public class SystemControllerPortTest {
         assertThat(actualSystems, contains(restSystemDto));
         verify(findSystemsByNameContainingUseCase).findSystemsByNameContaining(subString, amount);
     }
+    
+    @Test
+    public void testFindStationNamesFromSystemName(){
+        String systemName = "Sol";
+        
+        List<String> stations = List.of(
+                "Columbus",
+                "Daedalus",
+                "Dekker's Yard",
+                "Dewsnap Prospecting Station",
+                "Fraser Industrial Moulding",
+                "Galileo",
+                "Ji's Slumber",
+                "Li Qing Jao",
+                "M.Gorbachev",
+                "Majoro Entertainment Complex",
+                "Mars High");
+        
+        when(findStationNamesBySystemNameUseCase.findStationNamesBySystemName(systemName)).thenReturn(stations);
+        
+        List<String> result = underTest.stationNamesBySystemName(systemName);
+        
+        assertThat(result, hasSize(11));
+        assertThat(result, containsInAnyOrder(
+                "Columbus",
+                "Daedalus",
+                "Dekker's Yard",
+                "Dewsnap Prospecting Station",
+                "Fraser Industrial Moulding",
+                "Galileo",
+                "Ji's Slumber",
+                "Li Qing Jao",
+                "M.Gorbachev",
+                "Majoro Entertainment Complex",
+                "Mars High"));
+    }
+    
 }

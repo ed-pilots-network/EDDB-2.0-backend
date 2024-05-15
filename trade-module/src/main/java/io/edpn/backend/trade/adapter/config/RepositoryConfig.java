@@ -18,6 +18,7 @@ import io.edpn.backend.trade.adapter.persistence.ValidatedCommodityRepository;
 import io.edpn.backend.trade.adapter.persistence.entity.mapper.MybatisCommodityEntityMapper;
 import io.edpn.backend.trade.adapter.persistence.entity.mapper.MybatisCommodityMarketInfoEntityMapper;
 import io.edpn.backend.trade.adapter.persistence.entity.mapper.MybatisLocateCommodityEntityMapper;
+import io.edpn.backend.trade.adapter.persistence.entity.mapper.MybatisLoopTradeEntityMapper;
 import io.edpn.backend.trade.adapter.persistence.entity.mapper.MybatisMarketDatumEntityMapper;
 import io.edpn.backend.trade.adapter.persistence.entity.mapper.MybatisSingleHopEntityMapper;
 import io.edpn.backend.trade.adapter.persistence.entity.mapper.MybatisStationDataRequestEntityMapper;
@@ -29,11 +30,13 @@ import io.edpn.backend.trade.adapter.persistence.filter.mapper.MybatisFindCommod
 import io.edpn.backend.trade.adapter.persistence.filter.mapper.MybatisFindStationFilterMapper;
 import io.edpn.backend.trade.adapter.persistence.filter.mapper.MybatisFindSystemFilterMapper;
 import io.edpn.backend.trade.adapter.persistence.filter.mapper.MybatisLocateCommodityFilterMapper;
+import io.edpn.backend.trade.adapter.persistence.filter.mapper.MybatisLocateLoopTradeFilterMapper;
 import io.edpn.backend.trade.adapter.persistence.filter.mapper.MybatisLocateSingleHopTradeFilterMapper;
 import io.edpn.backend.trade.adapter.persistence.repository.MybatisCommodityMarketInfoRepository;
 import io.edpn.backend.trade.adapter.persistence.repository.MybatisCommodityRepository;
 import io.edpn.backend.trade.adapter.persistence.repository.MybatisLatestMarketDatumRepository;
 import io.edpn.backend.trade.adapter.persistence.repository.MybatisLocateCommodityRepository;
+import io.edpn.backend.trade.adapter.persistence.repository.MybatisLocateLoopTradeRouteRepository;
 import io.edpn.backend.trade.adapter.persistence.repository.MybatisLocateSingleHopTradeRouteRepository;
 import io.edpn.backend.trade.adapter.persistence.repository.MybatisMarketDatumRepository;
 import io.edpn.backend.trade.adapter.persistence.repository.MybatisStationArrivalDistanceRequestRepository;
@@ -77,8 +80,16 @@ public class RepositoryConfig {
     public LocateTradeRouteRepository locateTradeRouteRepository(
             MybatisLocateSingleHopTradeRouteRepository mybatisLocateSingleHopTradeRouteRepository,
             MybatisLocateSingleHopTradeFilterMapper mybatisLocateSingleHopTradeFilterMapper,
-            MybatisSingleHopEntityMapper mybatisSingleHopEntityMapper) {
-        return new LocateTradeRouteRepository(mybatisLocateSingleHopTradeRouteRepository, mybatisLocateSingleHopTradeFilterMapper, mybatisSingleHopEntityMapper);
+            MybatisSingleHopEntityMapper mybatisSingleHopEntityMapper,
+            MybatisLocateLoopTradeRouteRepository mybatisLocateLoopTradeRouteRepository,
+            MybatisLocateLoopTradeFilterMapper mybatisLocateLoopTradeFilterMapper,
+            MybatisLoopTradeEntityMapper mybatisLoopTradeEntityMapper) {
+        return new LocateTradeRouteRepository(mybatisLocateSingleHopTradeRouteRepository,
+                mybatisLocateSingleHopTradeFilterMapper,
+                mybatisSingleHopEntityMapper,
+                mybatisLocateLoopTradeRouteRepository,
+                mybatisLocateLoopTradeFilterMapper,
+                mybatisLoopTradeEntityMapper);
     }
     
     @Bean(name = "tradeMarketDatumRepository")

@@ -1,10 +1,9 @@
-package io.edpn.backend.trade.adapter.persistence.filter;
+package io.edpn.backend.trade.application.domain.filter;
 
+import io.edpn.backend.trade.application.domain.LandingPadSize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -14,19 +13,15 @@ import java.util.List;
 @Setter
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
-@EqualsAndHashCode
-public class MybatisLocateSingleHopTradeFilter {
-    
-    private String buyFromSystemName;
-    private String buyFromStationName;
-    private String sellToSystemName;
-    private String sellToStationName;
+public class LocateLoopTradeFilter {
+    private Double xCoordinate;
+    private Double yCoordinate;
+    private Double zCoordinate;
     private List<String> commodityDisplayNames;
     private Integer maxPriceAgeHours;
     private Integer maxRouteDistance;
-    private String maxLandingPadSize;
+    private LandingPadSize maxLandingPadSize;
     private Integer maxArrivalDistance;
     private Integer minSupply;
     private Integer minDemand;

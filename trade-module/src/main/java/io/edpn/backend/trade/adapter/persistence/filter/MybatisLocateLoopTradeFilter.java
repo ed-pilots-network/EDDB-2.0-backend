@@ -17,12 +17,10 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode
-public class MybatisLocateSingleHopTradeFilter {
-    
-    private String buyFromSystemName;
-    private String buyFromStationName;
-    private String sellToSystemName;
-    private String sellToStationName;
+public class MybatisLocateLoopTradeFilter {
+    private Double xCoordinate;
+    private Double yCoordinate;
+    private Double zCoordinate;
     private List<String> commodityDisplayNames;
     private Integer maxPriceAgeHours;
     private Integer maxRouteDistance;

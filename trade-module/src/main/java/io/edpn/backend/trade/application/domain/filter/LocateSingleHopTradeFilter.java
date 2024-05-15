@@ -24,7 +24,8 @@ public class LocateSingleHopTradeFilter {
     private Integer maxRouteDistance; //default 80
     private LandingPadSize maxLandingPadSize;
     private Integer maxArrivalDistance; //default < 5000
-    private Integer cargoCapacity;
+    private Integer minSupply;
+    private Integer minDemand;
     private Boolean includeSurfaceStations; //TODO
     private Boolean includeFleetCarriers; //TODO
 

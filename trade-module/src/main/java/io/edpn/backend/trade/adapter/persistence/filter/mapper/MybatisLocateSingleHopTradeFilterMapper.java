@@ -15,7 +15,8 @@ public class MybatisLocateSingleHopTradeFilterMapper {
                 .maxRouteDistance(locateSingleHopTradeFilter.getMaxRouteDistance())
                 .maxLandingPadSize(String.valueOf(locateSingleHopTradeFilter.getMaxLandingPadSize()))
                 .maxArrivalDistance(locateSingleHopTradeFilter.getMaxArrivalDistance())
-                .cargoCapacity(locateSingleHopTradeFilter.getCargoCapacity())
+                .minDemand(locateSingleHopTradeFilter.getMinDemand())
+                .minSupply(locateSingleHopTradeFilter.getMinSupply())
                 .includeSurfaceStations(locateSingleHopTradeFilter.getIncludeSurfaceStations())
                 .includeFleetCarriers(locateSingleHopTradeFilter.getIncludeFleetCarriers())
                 .build();

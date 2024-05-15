@@ -7,6 +7,7 @@ import io.edpn.backend.trade.adapter.persistence.repository.MybatisCommodityMark
 import io.edpn.backend.trade.adapter.persistence.repository.MybatisCommodityRepository;
 import io.edpn.backend.trade.adapter.persistence.repository.MybatisLatestMarketDatumRepository;
 import io.edpn.backend.trade.adapter.persistence.repository.MybatisLocateCommodityRepository;
+import io.edpn.backend.trade.adapter.persistence.repository.MybatisLocateLoopTradeRouteRepository;
 import io.edpn.backend.trade.adapter.persistence.repository.MybatisLocateSingleHopTradeRouteRepository;
 import io.edpn.backend.trade.adapter.persistence.repository.MybatisMarketDatumRepository;
 import io.edpn.backend.trade.adapter.persistence.repository.MybatisMessageRepository;
@@ -61,9 +62,16 @@ public class MyBatisConfiguration {
         return factoryBean;
     }
     
-    @Bean(name = "tradeMybatisLocateTradeRouteRepository")
+    @Bean(name = "tradeMybatisLocateSingleHopTradeRouteRepository")
     public MapperFactoryBean<MybatisLocateSingleHopTradeRouteRepository> mybatisLocateSingleHopTradeRouteRepository(@Qualifier("tradeSqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
         MapperFactoryBean<MybatisLocateSingleHopTradeRouteRepository> factoryBean = new MapperFactoryBean<>(MybatisLocateSingleHopTradeRouteRepository.class);
+        factoryBean.setSqlSessionFactory(sqlSessionFactory);
+        return factoryBean;
+    }
+    
+    @Bean(name = "tradeMybatisLocateLoopTradeRouteRepository")
+    public MapperFactoryBean<MybatisLocateLoopTradeRouteRepository> mybatisLocateLoopTradeRouteRepository(@Qualifier("tradeSqlSessionFactory") SqlSessionFactory sqlSessionFactory){
+        MapperFactoryBean<MybatisLocateLoopTradeRouteRepository> factoryBean = new MapperFactoryBean<>(MybatisLocateLoopTradeRouteRepository.class);
         factoryBean.setSqlSessionFactory(sqlSessionFactory);
         return factoryBean;
     }
