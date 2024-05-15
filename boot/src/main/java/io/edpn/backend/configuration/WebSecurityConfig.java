@@ -26,8 +26,8 @@ public class WebSecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("https://localhost:3000");
         configuration.addAllowedOrigin("http://localhost:3000");
-        configuration.addAllowedOrigin("https://*.edpn.io*");
-        configuration.addAllowedOrigin("http://*.edpn.io*");
+        configuration.addAllowedOrigin("https://oscar.edpn.io");
+        configuration.addAllowedOrigin("http://oscar.edpn.io");
         configuration.addAllowedMethod(CorsConfiguration.ALL);
         configuration.addAllowedHeader(CorsConfiguration.ALL);
         
