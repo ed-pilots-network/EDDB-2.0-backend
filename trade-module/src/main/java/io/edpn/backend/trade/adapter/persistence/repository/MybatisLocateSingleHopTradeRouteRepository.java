@@ -63,7 +63,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                          INNER JOIN stations_in_range ON station_id = stations_in_range.id
                                          INNER JOIN system ON stations_in_range.system_id = system.id
                                          INNER JOIN commodity_list ON commodity_id = commodity_list.id AND display_name IS NOT null
-                                WHERE stock > #{cargoCapacity}
+                                WHERE stock > #{minSupply}
                                   AND commodity_list.is_rare = false
                                   AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours})
                                   AND buy_price IS NOT null),
@@ -79,7 +79,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                            INNER JOIN stations_in_system ON station_id = stations_in_system.id
                                            INNER JOIN system on stations_in_system.system_id = system.id
                                            INNER JOIN commodity ON commodity_id = commodity.id AND display_name IS NOT null
-                                  WHERE (demand = 0 OR demand > (#{cargoCapacity} * 4))
+                                  WHERE (demand = 0 OR demand > #{minDemand})
                                     AND commodity.is_rare = false
                                     AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours}))
             
@@ -167,7 +167,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                          INNER JOIN stations_in_range ON station_id = stations_in_range.id
                                          INNER JOIN system ON stations_in_range.system_id = system.id
                                          INNER JOIN commodity_list ON commodity_id = commodity_list.id AND display_name IS NOT null
-                                WHERE stock > #{cargoCapacity}
+                                WHERE stock > #{minSupply}
                                   AND commodity_list.is_rare = false
                                   AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours})
                                   AND buy_price IS NOT null),
@@ -183,7 +183,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                            INNER JOIN reference_station ON station_id = reference_station.id
                                            INNER JOIN system on reference_station.system_id = system.id
                                            INNER JOIN commodity ON commodity_id = commodity.id AND display_name IS NOT null
-                                  WHERE (demand = 0 OR demand > (#{cargoCapacity} * 4))
+                                  WHERE (demand = 0 OR demand > #{minDemand})
                                     AND commodity.is_rare = false
                                     AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours}))
             
@@ -255,7 +255,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                          INNER JOIN reference_station ON station_id = reference_station.id
                                          INNER JOIN system ON reference_station.system_id = system.id
                                          INNER JOIN commodity_list ON commodity_id = commodity_list.id AND display_name IS NOT null
-                                WHERE stock > #{cargoCapacity}
+                                WHERE stock > #{minSupply}
                                   AND commodity_list.is_rare = false
                                   AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours})
                                   AND buy_price IS NOT null),
@@ -273,7 +273,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                            INNER JOIN stations_in_range ON station_id = stations_in_range.id
                                            INNER JOIN system on stations_in_range.system_id = system.id
                                            INNER JOIN commodity ON commodity_id = commodity.id AND display_name IS NOT null
-                                  WHERE (demand = 0 OR demand > (#{cargoCapacity} * 4))
+                                  WHERE (demand = 0 OR demand > #{minDemand})
                                     AND commodity.is_rare = false
                                     AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours}))
             
@@ -346,7 +346,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                          INNER JOIN reference_station ON station_id = reference_station.id
                                          INNER JOIN system ON reference_station.system_id = system.id
                                          INNER JOIN commodity_list ON commodity_id = commodity_list.id AND display_name IS NOT null
-                                WHERE stock > #{cargoCapacity}
+                                WHERE stock > #{minSupply}
                                   AND commodity_list.is_rare = false
                                   AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours})
                                   AND buy_price IS NOT null),
@@ -364,7 +364,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                            INNER JOIN stations_in_range ON station_id = stations_in_range.id
                                            INNER JOIN system on stations_in_range.system_id = system.id
                                            INNER JOIN commodity ON commodity_id = commodity.id AND display_name IS NOT null
-                                  WHERE (demand = 0 OR demand > (#{cargoCapacity} * 4))
+                                  WHERE (demand = 0 OR demand > #{minDemand})
                                     AND commodity.is_rare = false
                                     AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours}))
             
@@ -441,7 +441,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                          INNER JOIN buy_system ON station_id = buy_system.id
                                          INNER JOIN system ON buy_system.system_id = system.id
                                          INNER JOIN commodity_list ON commodity_id = commodity_list.id AND display_name IS NOT null
-                                WHERE stock > #{cargoCapacity}
+                                WHERE stock > #{minSupply}
                                   AND commodity_list.is_rare = false
                                   AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours})
                                   AND buy_price IS NOT null),
@@ -457,7 +457,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                            INNER JOIN sell_system ON station_id = sell_system.id
                                            INNER JOIN system on sell_system.system_id = system.id
                                            INNER JOIN commodity ON commodity_id = commodity.id AND display_name IS NOT null
-                                  WHERE (demand = 0 OR demand > (#{cargoCapacity} * 4))
+                                  WHERE (demand = 0 OR demand > #{minDemand})
                                     AND commodity.is_rare = false
                                     AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours}))
             
