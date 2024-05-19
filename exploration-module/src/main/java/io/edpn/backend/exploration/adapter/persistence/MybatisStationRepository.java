@@ -80,7 +80,8 @@ public interface MybatisStationRepository {
     @Select({
             "SELECT station.name FROM station " +
                     "INNER JOIN system ON station.system_id = system.id " +
-                    "WHERE system.name = #{systemName}"
+                    "WHERE system.name = #{systemName} " +
+                    "AND station.type != 'FleetCarrier'"
     })
     List<String> findStationNamesBySystemName(@Param("systemName") String systemName);
 }
