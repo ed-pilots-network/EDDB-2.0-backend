@@ -260,7 +260,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                 WHERE stock > #{minSupply}
                                   AND commodity_list.is_rare = false
                                   AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours})
-                                  AND mean_price < buy_price),
+                                  AND mean_price > buy_price),
             
                  sell_market AS (SELECT commodity_id,
                                          station_id                                                             as sell_station_id,
