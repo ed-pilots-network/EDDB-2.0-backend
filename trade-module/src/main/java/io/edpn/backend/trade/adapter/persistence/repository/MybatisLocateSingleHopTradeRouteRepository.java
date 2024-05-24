@@ -15,7 +15,7 @@ import java.util.List;
 public interface MybatisLocateSingleHopTradeRouteRepository {
     @Select("""
             <script>
-            WITH stations_in_range AS (SELECT station.id,
+            WITH stations_in_range AS MATERIALIZED (SELECT station.id,
                                               system_id,
                                               arrival_distance
                                        FROM station
@@ -119,7 +119,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
     
     @Select("""
             <script>
-            WITH stations_in_range AS (SELECT station.id,
+            WITH stations_in_range AS MATERIALIZED (SELECT station.id,
                                               system_id,
                                               arrival_distance
                                        FROM station
