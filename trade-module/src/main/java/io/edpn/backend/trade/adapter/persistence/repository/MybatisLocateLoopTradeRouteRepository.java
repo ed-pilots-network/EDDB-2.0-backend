@@ -59,7 +59,7 @@ public interface MybatisLocateLoopTradeRouteRepository {
                                 WHERE stock > #{minSupply}
                                   AND commodity_list.is_rare = false
                                   AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours})
-                                  AND buy_price IS NOT null),
+                                  AND mean_price > buy_price),
             
                  sell_market AS (SELECT commodity_id,
                                         station_id                                                             as sell_station_id,
@@ -76,6 +76,7 @@ public interface MybatisLocateLoopTradeRouteRepository {
                                           INNER JOIN commodity_list ON commodity_id = commodity_list.id AND display_name IS NOT null
                                  WHERE (demand = 0 OR demand > #{minDemand})
                                    AND commodity_list.is_rare = false
+                                   AND sell_price > mean_price
                                    AND timestamp >= (now() - INTERVAL '1 hour' * #{maxPriceAgeHours}))
             
             SELECT buy_market.commodity_id,
