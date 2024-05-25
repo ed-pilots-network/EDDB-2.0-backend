@@ -293,7 +293,7 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                    st_3ddistance(buy_market.coordinates_geom, sell_market.coordinates_geom) AS route_distance
             FROM buy_market
                      INNER JOIN sell_market ON buy_market.commodity_id = sell_market.commodity_id
-                AND st_3ddwithin(sell_market.coordinates_geom, buy_market.coordinates_geom, #{maxRouteDistance}
+                AND st_3ddwithin(sell_market.coordinates_geom, buy_market.coordinates_geom, #{maxRouteDistance})
                 AND buy_market.buy_station_id != sell_market.sell_station_id
                 AND 100 >= sell_market.rn
             WHERE (sell_market.sell_price - buy_market.buy_price) > 0
