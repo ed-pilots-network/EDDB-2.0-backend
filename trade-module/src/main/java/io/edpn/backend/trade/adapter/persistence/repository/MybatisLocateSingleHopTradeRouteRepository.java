@@ -23,9 +23,9 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                        WHERE st_3ddwithin((select coordinates_geom
                                                            from system
                                                            where system.name = #{sellToSystemName}), coordinates_geom, #{maxRouteDistance})
-                                        <if test='!includeFleetCarriers'>
-                                         AND station.name NOT SIMILAR TO '[A-Za-z0-9]{3}-[A-Za-z0-9]{3}'
-                                        </if>
+                                         AND station.fleet_carrier = #{includeFleetCarriers}
+                                         AND station.require_odyssey = #{includeOdyssey}
+                                         AND station.planetary = #{includeSurfaceStations}
                                         <if test='maxLandingPadSize == "LARGE"'>AND max_landing_pad_size = 'LARGE'</if>
                                         <if test='maxLandingPadSize == "MEDIUM"'>AND max_landing_pad_size IN ('MEDIUM', 'LARGE')</if>
                                          AND #{maxArrivalDistance} >= arrival_distance),
@@ -128,9 +128,9 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                        WHERE st_3ddwithin((select coordinates_geom
                                                            from system
                                                            where system.name = #{sellToSystemName}), coordinates_geom, #{maxRouteDistance})
-                                        <if test='!includeFleetCarriers'>
-                                         AND station.name NOT SIMILAR TO '[A-Za-z0-9]{3}-[A-Za-z0-9]{3}'
-                                        </if>
+                                         AND station.fleet_carrier = #{includeFleetCarriers}
+                                         AND station.require_odyssey = #{includeOdyssey}
+                                         AND station.planetary = #{includeSurfaceStations}
                                         <if test='maxLandingPadSize == "LARGE"'>AND max_landing_pad_size = 'LARGE'</if>
                                         <if test='maxLandingPadSize == "MEDIUM"'>AND max_landing_pad_size IN ('MEDIUM', 'LARGE')</if>
                                          AND #{maxArrivalDistance} >= arrival_distance),
@@ -221,9 +221,9 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                        WHERE st_3ddwithin((select coordinates_geom
                                                            from system
                                                            where system.name = #{buyFromSystemName}), coordinates_geom, #{maxRouteDistance})
-                                        <if test='!includeFleetCarriers'>
-                                         AND station.name NOT SIMILAR TO '[A-Za-z0-9]{3}-[A-Za-z0-9]{3}'
-                                        </if>
+                                         AND station.fleet_carrier = #{includeFleetCarriers}
+                                         AND station.require_odyssey = #{includeOdyssey}
+                                         AND station.planetary = #{includeSurfaceStations}
                                         <if test='maxLandingPadSize == "LARGE"'>AND max_landing_pad_size = 'LARGE'</if>
                                         <if test='maxLandingPadSize == "MEDIUM"'>AND max_landing_pad_size IN ('MEDIUM', 'LARGE')</if>
                                          AND #{maxArrivalDistance} >= arrival_distance),
@@ -313,9 +313,9 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                        WHERE st_3ddwithin((select coordinates_geom
                                                            from system
                                                            where system.name = #{buyFromSystemName}), coordinates_geom, #{maxRouteDistance})
-                                        <if test='!includeFleetCarriers'>
-                                         AND station.name NOT SIMILAR TO '[A-Za-z0-9]{3}-[A-Za-z0-9]{3}'
-                                        </if>
+                                         AND station.fleet_carrier = #{includeFleetCarriers}
+                                         AND station.require_odyssey = #{includeOdyssey}
+                                         AND station.planetary = #{includeSurfaceStations}
                                         <if test='maxLandingPadSize == "LARGE"'>AND max_landing_pad_size = 'LARGE'</if>
                                         <if test='maxLandingPadSize == "MEDIUM"'>AND max_landing_pad_size IN ('MEDIUM', 'LARGE')</if>
                                          AND #{maxArrivalDistance} >= arrival_distance),
@@ -404,9 +404,9 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                         FROM station
                                                 INNER JOIN system ON station.system_id = system.id
                                         WHERE system.name = #{buyFromSystemName}
-                                           <if test='!includeFleetCarriers'>
-                                            AND station.name NOT SIMILAR TO '[A-Za-z0-9]{3}-[A-Za-z0-9]{3}'
-                                           </if>
+                                         AND station.fleet_carrier = #{includeFleetCarriers}
+                                         AND station.require_odyssey = #{includeOdyssey}
+                                         AND station.planetary = #{includeSurfaceStations}
                                            <if test='maxLandingPadSize == "LARGE"'>AND max_landing_pad_size = 'LARGE'</if>
                                            <if test='maxLandingPadSize == "MEDIUM"'>AND max_landing_pad_size IN ('MEDIUM', 'LARGE')</if>
                                             AND #{maxArrivalDistance} >= arrival_distance),
@@ -417,9 +417,9 @@ public interface MybatisLocateSingleHopTradeRouteRepository {
                                         FROM station
                                                  INNER JOIN system ON station.system_id = system.id
                                         WHERE system.name = #{sellToSystemName}
-                                           <if test='!includeFleetCarriers'>
-                                            AND station.name NOT SIMILAR TO '[A-Za-z0-9]{3}-[A-Za-z0-9]{3}'
-                                           </if>
+                                         AND station.fleet_carrier = #{includeFleetCarriers}
+                                         AND station.require_odyssey = #{includeOdyssey}
+                                         AND station.planetary = #{includeSurfaceStations}
                                            <if test='maxLandingPadSize == "LARGE"'>AND max_landing_pad_size = 'LARGE'</if>
                                            <if test='maxLandingPadSize == "MEDIUM"'>AND max_landing_pad_size IN ('MEDIUM', 'LARGE')</if>
                                             AND #{maxArrivalDistance} >= arrival_distance),

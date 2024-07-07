@@ -20,9 +20,9 @@ public interface MybatisLocateLoopTradeRouteRepository {
                                        FROM public.station
                                                 INNER JOIN system ON station.system_id = system.id
                                        WHERE st_3ddwithin(st_makepoint(#{xCoordinate}, #{yCoordinate}, #{zCoordinate}), coordinates_geom, 300)
-                                        <if test='!includeFleetCarriers'>
-                                         AND station.name NOT SIMILAR TO '[A-Za-z0-9]{3}-[A-Za-z0-9]{3}'
-                                        </if>
+                                         AND station.fleet_carrier = #{includeFleetCarriers}
+                                         AND station.require_odyssey = #{includeOdyssey}
+                                         AND station.planetary = #{includeSurfaceStations}
                                         <if test='maxLandingPadSize == "LARGE"'>AND max_landing_pad_size = 'LARGE'</if>
                                         <if test='maxLandingPadSize == "MEDIUM"'>AND max_landing_pad_size IN ('MEDIUM', 'LARGE')</if>
                                          AND #{maxArrivalDistance} >= arrival_distance
