@@ -16,6 +16,7 @@ public record RestLocateSingleHopRouteFilterDto(
         @NotNull Integer maxArrivalDistance,
         @NotNull Integer cargoCapacity,
         @NotNull Boolean includeSurfaceStations,
+        @NotNull Boolean includeOdyssey,
         @NotNull Boolean includeFleetCarriers) {
 
 }

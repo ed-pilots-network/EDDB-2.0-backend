@@ -24,6 +24,7 @@ public class RestLocateSingleHopRouteFilterDtoMapper {
                 .minDemand(locateSingleHopRouteFilterDto.cargoCapacity() * 4) // no loss on sale
                 .minSupply(locateSingleHopRouteFilterDto.cargoCapacity()) // enough supply for full cargo hold
                 .includeSurfaceStations(locateSingleHopRouteFilterDto.includeSurfaceStations())
+                .includeOdyssey(locateSingleHopRouteFilterDto.includeOdyssey())
                 .includeFleetCarriers(locateSingleHopRouteFilterDto.includeFleetCarriers())
                 .build();
     }

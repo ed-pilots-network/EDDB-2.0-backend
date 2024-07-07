@@ -14,5 +14,6 @@ public record RestLocateLoopRouteFilterDto(
         Integer minSupply,
         Integer minDemand,
         Boolean includeSurfaceStations,
+        Boolean includeOdyssey,
         Boolean includeFleetCarriers) {
 }

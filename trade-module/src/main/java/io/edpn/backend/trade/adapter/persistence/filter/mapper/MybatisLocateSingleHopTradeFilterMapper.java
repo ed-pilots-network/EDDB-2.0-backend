@@ -18,6 +18,7 @@ public class MybatisLocateSingleHopTradeFilterMapper {
                 .minDemand(locateSingleHopTradeFilter.getMinDemand())
                 .minSupply(locateSingleHopTradeFilter.getMinSupply())
                 .includeSurfaceStations(locateSingleHopTradeFilter.getIncludeSurfaceStations())
+                .includeOdyssey(locateSingleHopTradeFilter.getIncludeOdyssey())
                 .includeFleetCarriers(locateSingleHopTradeFilter.getIncludeFleetCarriers())
                 .build();
     }

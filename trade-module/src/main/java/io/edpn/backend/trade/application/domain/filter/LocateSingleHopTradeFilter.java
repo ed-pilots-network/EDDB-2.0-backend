@@ -26,7 +26,8 @@ public class LocateSingleHopTradeFilter {
     private Integer maxArrivalDistance; //default < 5000
     private Integer minSupply;
     private Integer minDemand;
-    private Boolean includeSurfaceStations; //TODO
-    private Boolean includeFleetCarriers; //TODO
+    private Boolean includeSurfaceStations;
+    private Boolean includeOdyssey;
+    private Boolean includeFleetCarriers;
 
 }

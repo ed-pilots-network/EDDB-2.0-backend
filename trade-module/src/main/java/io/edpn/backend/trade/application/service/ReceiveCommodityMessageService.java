@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -57,7 +56,19 @@ public class ReceiveCommodityMessageService implements ReceiveKafkaMessageUseCas
         String systemName = payload.systemName();
         String stationName = payload.stationName();
         String[] prohibitedCommodities = payload.prohibited();
-
+        
+        var planetaryStationTypes = List.of("CraterOutpost", "CraterPort", "OnFootSettlement");
+        Boolean isPlanetary;
+        Boolean isFleetCarrier;
+        if (payload.stationType() != null) {
+            isPlanetary = planetaryStationTypes.contains(payload.stationType());
+            isFleetCarrier = "FleetCarrier".equals(payload.stationType());
+        } else {
+            isFleetCarrier = null;
+            isPlanetary = null;
+        }
+        boolean requiresOdyssey = payload.odyssey();
+        
         CompletableFuture<Station> stationCompletableFuture = CompletableFuture.supplyAsync(() -> createOrLoadSystemPort.createOrLoad(new System(
                         idGenerator.generateId(),
                         null,
@@ -74,15 +85,15 @@ public class ReceiveCommodityMessageService implements ReceiveKafkaMessageUseCas
                 }).thenCompose(loadedSystem -> CompletableFuture.supplyAsync(() -> {
                     Station station = new Station(
                             idGenerator.generateId(),
-                            null,
+                            marketId,
                             stationName,
                             null,
                             loadedSystem,
+                            isPlanetary,
+                            requiresOdyssey,
+                            isFleetCarrier,
                             null,
-                            null,
-                            null,
-                            null,
-                            null,
+                            updateTimestamp,
                             null
                     );
                     return createOrLoadStationPort.createOrLoad(station);
@@ -91,21 +102,9 @@ public class ReceiveCommodityMessageService implements ReceiveKafkaMessageUseCas
                     if (throwable != null) {
                         log.error("Exception occurred in retrieving station", throwable);
                     } else {
-                        //if we get the message here, it always is NOT a fleet carrier
-                        Station updatedStation = station.withFleetCarrier(false);
-
-                        if (Objects.isNull(updatedStation.marketId())) {
-                            updatedStation = updatedStation.withMarketId(marketId);
-                        }
-
-                        if (Objects.isNull(updatedStation.marketUpdatedAt()) || updateTimestamp.isAfter(station.marketUpdatedAt())) {
-                            updatedStation = updatedStation.withMarketUpdatedAt(updateTimestamp);
-                        }
-
-                        final Station finalUpdatedStation = updatedStation;
                         stationRequestDataServices.stream()
-                                .filter(useCase -> useCase.isApplicable(finalUpdatedStation))
-                                .forEach(useCase -> useCase.request(finalUpdatedStation));
+                                .filter(useCase -> useCase.isApplicable(station))
+                                .forEach(useCase -> useCase.request(station));
                     }
                 });
 

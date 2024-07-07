@@ -18,6 +18,7 @@ public class MybatisLocateLoopTradeFilterMapper {
                 .minSupply(locateLoopTradeFilter.getMinSupply())
                 .minDemand(locateLoopTradeFilter.getMinDemand())
                 .includeSurfaceStations(locateLoopTradeFilter.getIncludeSurfaceStations())
+                .includeOdyssey(locateLoopTradeFilter.getIncludeOdyssey())
                 .includeFleetCarriers(locateLoopTradeFilter.getIncludeFleetCarriers())
                 .build();
     }
