@@ -58,9 +58,16 @@ public class ReceiveCommodityMessageService implements ReceiveKafkaMessageUseCas
         String[] prohibitedCommodities = payload.prohibited();
         
         var planetaryStationTypes = List.of("CraterOutpost", "CraterPort", "OnFootSettlement");
-        boolean isPlanetary = payload.stationType() != null && planetaryStationTypes.contains(payload.stationType());
-        boolean isFleetCarrier = "FleetCarrier".equals(payload.stationType());
-        boolean requiresOdyssey = Boolean.TRUE.equals(payload.odyssey());
+        Boolean isPlanetary;
+        Boolean isFleetCarrier;
+        if (payload.stationType() != null) {
+            isPlanetary = planetaryStationTypes.contains(payload.stationType());
+            isFleetCarrier = "FleetCarrier".equals(payload.stationType());
+        } else {
+            isFleetCarrier = null;
+            isPlanetary = null;
+        }
+        boolean requiresOdyssey = payload.odyssey();
         
         CompletableFuture<Station> stationCompletableFuture = CompletableFuture.supplyAsync(() -> createOrLoadSystemPort.createOrLoad(new System(
                         idGenerator.generateId(),
