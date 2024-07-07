@@ -38,6 +38,7 @@ public class RestLocateLoopRouteFilterDtoTest {
                 10000,
                 10000,
                 true,
+                false,
                 false);
         
         LocateLoopTradeFilter domainObject = underTest.map(dto);

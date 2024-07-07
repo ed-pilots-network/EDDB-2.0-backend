@@ -38,6 +38,7 @@ public class RestLocateSingleHopRouteFilterDtoTest {
                 5000,
                 720,
                 true,
+                false,
                 false);
         
         LocateSingleHopTradeFilter domainObject = underTest.map(dto);
