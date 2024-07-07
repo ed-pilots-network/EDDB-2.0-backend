@@ -23,6 +23,7 @@ public class RestLocateLoopRouteFilterDtoMapper {
                 .minSupply(locateLoopRouteFilterDto.minSupply())
                 .minDemand(locateLoopRouteFilterDto.minDemand())
                 .includeSurfaceStations(locateLoopRouteFilterDto.includeSurfaceStations())
+                .includeOdyssey(locateLoopRouteFilterDto.includeOdyssey())
                 .includeFleetCarriers(locateLoopRouteFilterDto.includeFleetCarriers())
                 .build();
     }

@@ -29,5 +29,6 @@ public class MybatisLocateLoopTradeFilter {
     private Integer minSupply;
     private Integer minDemand;
     private Boolean includeSurfaceStations;
+    private Boolean includeOdyssey;
     private Boolean includeFleetCarriers;
 }
