@@ -12,13 +12,14 @@ import io.edpn.backend.trade.application.port.outgoing.station.CreateOrLoadStati
 import io.edpn.backend.trade.application.port.outgoing.station.UpdateStationPort;
 import io.edpn.backend.trade.application.port.outgoing.system.CreateOrLoadSystemPort;
 import io.edpn.backend.util.IdGenerator;
-import java.time.LocalDateTime;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
@@ -106,9 +107,6 @@ class ReceiveCommodityMessageUseCaseTest {
 
         Station station = mock(Station.class);
         when(createOrLoadStationPort.createOrLoad(argThat(argument -> argument.system().equals(system) && argument.name().equals("station")))).thenReturn(station);
-        when(station.withFleetCarrier(false)).thenReturn(station);
-        when(station.marketUpdatedAt()).thenReturn(null);
-        when(station.withMarketUpdatedAt(timestamp)).thenReturn(station);
 
         underTest.receive(message);
 
