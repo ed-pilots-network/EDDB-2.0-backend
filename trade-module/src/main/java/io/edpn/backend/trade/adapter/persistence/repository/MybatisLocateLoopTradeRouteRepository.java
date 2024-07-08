@@ -20,7 +20,7 @@ public interface MybatisLocateLoopTradeRouteRepository {
                                        FROM public.station
                                                 INNER JOIN system ON station.system_id = system.id
                                        WHERE st_3ddwithin(st_makepoint(#{xCoordinate}, #{yCoordinate}, #{zCoordinate}), coordinates_geom, 300)
-                                        `<if test='!includeFleetCarriers'>
+                                        <if test='!includeFleetCarriers'>
                                          AND station.fleet_carrier = #{includeFleetCarriers}
                                         </if>
                                         <if test='!includeOdyssey'>
