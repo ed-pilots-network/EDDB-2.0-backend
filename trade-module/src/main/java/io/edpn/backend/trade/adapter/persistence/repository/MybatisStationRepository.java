@@ -64,7 +64,7 @@ public interface MybatisStationRepository {
             "require_odyssey = COALESCE(station.require_odyssey, EXCLUDED.require_odyssey),",
             "fleet_carrier = COALESCE(station.fleet_carrier, EXCLUDED.fleet_carrier),",
             "max_landing_pad_size = COALESCE(station.max_landing_pad_size, EXCLUDED.max_landing_pad_size),",
-            "market_updated_at = COALESCE(station.market_updated_at, EXCLUDED.market_updated_at)",
+            "market_updated_at = COALESCE(EXCLUDED.market_updated_at, station.market_updated_at)",
             "RETURNING *"
     })
     @ResultMap("stationResultMap")
