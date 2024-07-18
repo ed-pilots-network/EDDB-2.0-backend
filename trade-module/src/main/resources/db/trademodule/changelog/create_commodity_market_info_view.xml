@@ -25,7 +25,7 @@
                                             COUNT(NULLIF(buy_price, 0))         AS stations_with_buy_price,
                                             COUNT(NULLIF(sell_price, 0))        AS stations_with_sell_price,
 
-                                            SUM((buy_price < mean_price)::int)  AS stations_with_buy_price_lower_than_average,
+                                            SUM((NULLIF(buy_price, 0) < mean_price)::int)  AS stations_with_buy_price_lower_than_average,
                                             SUM((sell_price > mean_price)::int) AS stations_with_sell_price_higher_than_average
 
                                      FROM latest_market_datum
@@ -39,11 +39,11 @@
                                     select commodity_stats.*,
                                            (select station_id
                                             FROM latest_market_datum
-                                            where sell_price = commodity_stats.max_sell_price
+                                            where commodity_id = commodity_stats.commodity_id and sell_price = commodity_stats.max_sell_price
                                                LIMIT 1) as highest_selling_to_station,
                                            (select station_id
                                             FROM latest_market_datum
-                                            where buy_price = commodity_stats.min_buy_price
+                                            where commodity_id = commodity_stats.commodity_id and buy_price = commodity_stats.min_buy_price
                                             LIMIT 1) as lowest_buying_from_station
                                     from commodity_stats;
             ]]>
