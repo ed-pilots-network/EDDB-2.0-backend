@@ -6,80 +6,46 @@
     <changeSet id="create_commodity_market_info_view" author="pveeckhout" runAlways="true">
         <createView viewName="commodity_market_info_view" replaceIfExists="true">
             <![CDATA[
-            WITH prices AS (SELECT commodity_id,
-                                        MAX(sell_price)           AS max_sell_price,
-                                        MIN(nullif(buy_price, 0)) AS min_buy_price,
-                                        AVG(mean_price)           AS avg_mean_price
-                            FROM latest_market_datum
-                                 GROUP BY commodity_id),
-                 distance_calculations AS (SELECT md_1.commodity_id,
-                                                  md_1.station_id,
-                                                  s.system_id,
-                                                  md_1.buy_price,
-                                                  md_1.sell_price,
-                                                  ST_3DDistance(sys.coordinates_geom, ST_MakePoint(0, 0, 0)) AS distance_from_sol
-                                           FROM latest_market_datum md_1
-                                                    JOIN prices p ON p.commodity_id = md_1.commodity_id
-                                                    JOIN station s ON md_1.station_id = s.id
-                                                    JOIN system sys ON s.system_id = sys.id
-                                           WHERE md_1.sell_price = p.max_sell_price
-                                              OR md_1.buy_price = p.min_buy_price),
-                 stations_with_prices AS (SELECT dc.commodity_id,
-                                                 dc.station_id,
-                                                 dc.system_id,
-                                                 dc.buy_price,
-                                                 dc.sell_price,
-                                                 row_number() OVER (PARTITION BY dc.commodity_id, dc.sell_price ORDER BY dc.distance_from_sol) AS rn_sell,
-                                                 row_number() OVER (PARTITION BY dc.commodity_id, dc.buy_price ORDER BY dc.distance_from_sol) AS rn_buy
-                                          FROM distance_calculations dc),
-                 highest_selling AS (SELECT commodity_id,
-                                            station_id AS highest_selling_station
-                                     FROM stations_with_prices
-                                     WHERE rn_sell = 1),
-                 lowest_buying AS (SELECT commodity_id,
-                                          station_id AS lowest_buying_station
-                                   FROM stations_with_prices
-                                   WHERE rn_buy = 1),
-                 min_max_stations as (SELECT COALESCE(hs.commodity_id, lb.commodity_id) AS commodity_id,
-                                             hs.highest_selling_station,
-                                             lb.lowest_buying_station
-                                      FROM highest_selling hs
-                                               FULL JOIN lowest_buying lb ON hs.commodity_id = lb.commodity_id),
-                 buy_sell_counts AS (SELECT md.commodity_id,
-                                            COUNT(DISTINCT CASE WHEN md.buy_price IS NOT NULL AND md.buy_price != 0 THEN md.station_id END)   AS stations_with_buy_price,
-                                            COUNT(DISTINCT CASE WHEN md.sell_price IS NOT NULL AND md.sell_price != 0 THEN md.station_id END) AS stations_with_sell_price,
-                                            COUNT(DISTINCT CASE WHEN md.buy_price < p.avg_mean_price THEN md.station_id END)                  AS stations_with_buy_price_lower_than_average,
-                                            COUNT(DISTINCT CASE WHEN md.sell_price > p.avg_mean_price THEN md.station_id END)                 AS stations_with_sell_price_higher_than_average
-                                     FROM latest_market_datum md
-                                              JOIN prices p ON p.commodity_id = md.commodity_id
-                                     GROUP BY md.commodity_id)
-            SELECT md.commodity_id,
-                   MAX(NULLIF(md.buy_price, 0))  AS max_buy_price,
-                   MIN(NULLIF(md.buy_price, 0))  AS minb_buy_price,
-                   AVG(NULLIF(md.buy_price, 0))  AS avg_buy_price,
-                   MAX(NULLIF(md.sell_price, 0)) AS max_sell_price,
-                   MIN(NULLIF(md.sell_price, 0)) AS min_sell_price,
-                   AVG(NULLIF(md.sell_price, 0)) AS avg_sell_price,
-                   MIN(NULLIF(md.mean_price, 0)) AS min_mean_price,
-                   MAX(NULLIF(md.mean_price, 0)) AS max_mean_price,
-                   AVG(NULLIF(md.mean_price, 0)) AS average_mean_price,
-                   SUM(md.stock)                 AS total_stock,
-                   SUM(md.demand)                AS total_demand,
-                   COUNT(DISTINCT md.station_id) AS total_stations,
-                   bsc.stations_with_buy_price,
-                   bsc.stations_with_sell_price,
-                   bsc.stations_with_buy_price_lower_than_average,
-                   bsc.stations_with_sell_price_higher_than_average,
-                   MIN((CASE WHEN mms.highest_selling_station IS NOT NULL THEN mms.highest_selling_station END) ::text)::UUID AS highest_selling_to_station,
-                   MAX((CASE WHEN mms.lowest_buying_station IS NOT NULL THEN mms.lowest_buying_station END)::text) ::UUID AS lowest_buying_from_station
-            FROM latest_market_datum md
-                     LEFT JOIN buy_sell_counts bsc ON md.commodity_id = bsc.commodity_id
-                     LEFT JOIN min_max_stations mms ON md.commodity_id = mms.commodity_id
-            GROUP BY md.commodity_id,
-                     bsc.stations_with_buy_price,
-                     bsc.stations_with_sell_price,
-                     bsc.stations_with_buy_price_lower_than_average,
-                     bsc.stations_with_sell_price_higher_than_average;
+            with commodity_stats as (SELECT commodity_id,
+
+                                            MAX(buy_price)                      AS max_buy_price,
+                                            MIN(NULLIF(buy_price, 0))           AS min_buy_price,
+                                            AVG(NULLIF(buy_price, 0))           AS avg_buy_price,
+
+                                            MAX(sell_price)                     AS max_sell_price,
+                                            MIN(NULLIF(sell_price, 0))          AS min_sell_price,
+                                            AVG(NULLIF(sell_price, 0))          AS avg_sell_price,
+
+                                            AVG(mean_price)                     AS mean_price,
+
+                                            SUM(stock)                          AS total_stock,
+                                            SUM(demand)                         AS total_demand,
+
+                                            COUNT(station_id)                   AS total_stations,
+                                            COUNT(NULLIF(buy_price, 0))         AS stations_with_buy_price,
+                                            COUNT(NULLIF(sell_price, 0))        AS stations_with_sell_price,
+
+                                            SUM((buy_price < mean_price)::int)  AS stations_with_buy_price_lower_than_average,
+                                            SUM((sell_price > mean_price)::int) AS stations_with_sell_price_higher_than_average
+
+                                     FROM latest_market_datum
+                                              inner join commodity on commodity_id = commodity.id
+                                              inner join station on latest_market_datum.station_id = station.id
+                                     where display_name is not null
+                                        and station.name NOT SIMILAR TO '[A-Za-z0-9]{3}-[A-Za-z0-9]{3}'
+                                        and commodity.is_rare = false
+                                    GROUP BY commodity_id)
+
+                                    select commodity_stats.*,
+                                           (select station_id
+                                            FROM latest_market_datum
+                                            where sell_price = commodity_stats.max_sell_price
+                                               LIMIT 1) as highest_selling_to_station,
+                                           (select station_id
+                                            FROM latest_market_datum
+                                            where buy_price = commodity_stats.min_buy_price
+                                            LIMIT 1) as lowest_buying_from_station
+                                    from commodity_stats;
             ]]>
         </createView>
     </changeSet>
