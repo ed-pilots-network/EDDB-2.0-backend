@@ -38,6 +38,7 @@
     <include file="/db/trademodule/changelog/fill_commodity_combined_table.xml"/>
     <include file="/db/trademodule/changelog/add_commodity_cover_index.xml"/>
     <include file="/db/trademodule/changelog/add_latest_market_datum_cover_indexes.xml"/>
+    <include file="/db/trademodule/changelog/change_max_landing_pad_size_to_numeral.xml"/>
 
     <!-- views always last as they might depend on new columns -->
     <include file="/db/trademodule/changelog/create_validated_commodity_view.xml"/>

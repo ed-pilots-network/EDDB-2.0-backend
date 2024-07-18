@@ -1,6 +1,9 @@
 package io.edpn.backend.trade.adapter.persistence.filter.mapper;
 
 import io.edpn.backend.trade.adapter.persistence.filter.MybatisLocateCommodityFilter;
+import io.edpn.backend.trade.application.domain.LandingPadSize;
+
+import java.util.Optional;
 
 public class MybatisLocateCommodityFilterMapper {
 
@@ -13,7 +16,7 @@ public class MybatisLocateCommodityFilterMapper {
                 .includePlanetary(locateCommodityFilter.getIncludePlanetary())
                 .includeOdyssey(locateCommodityFilter.getIncludeOdyssey())
                 .includeFleetCarriers(locateCommodityFilter.getIncludeFleetCarriers())
-                .maxLandingPadSize(String.valueOf(locateCommodityFilter.getMaxLandingPadSize()))
+                .maxLandingPadSize(Optional.ofNullable(locateCommodityFilter.getMaxLandingPadSize()).map(LandingPadSize::value).orElse(null))
                 .minSupply(locateCommodityFilter.getMinSupply())
                 .minDemand(locateCommodityFilter.getMinDemand())
                 .build();

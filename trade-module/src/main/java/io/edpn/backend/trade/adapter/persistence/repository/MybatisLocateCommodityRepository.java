@@ -32,8 +32,7 @@ public interface MybatisLocateCommodityRepository {
             <if test='!includeFleetCarriers'>AND fleet_carrier = false </if>
             AND stock >= #{minSupply}
             AND demand >= #{minDemand}
-            <if test='maxLandingPadSize == "LARGE"'>AND max_landing_pad_size = 'LARGE'</if>
-            <if test='maxLandingPadSize == "MEDIUM"'>AND max_landing_pad_size IN ('MEDIUM', 'LARGE')</if>
+            AND max_landing_pad_size >= #{maxLandingPadSize}
             ORDER BY distance
             </script>"""
     )
