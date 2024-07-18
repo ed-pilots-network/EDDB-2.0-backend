@@ -51,9 +51,7 @@ class MybatisCommodityMarketInfoEntityMapperTest {
                 .maxSellPrice(200.0)
                 .minSellPrice(100.0)
                 .avgSellPrice(150.0)
-                .minMeanPrice(60.0)
-                .maxMeanPrice(180.0)
-                .averageMeanPrice(120.0)
+                .meanPrice(120.0)
                 .totalStock(1000L)
                 .totalDemand(500L)
                 .totalStations(10)
@@ -80,9 +78,7 @@ class MybatisCommodityMarketInfoEntityMapperTest {
         assertThat(result.maxSellPrice(), is(200.0));
         assertThat(result.minSellPrice(), is(100.0));
         assertThat(result.avgSellPrice(), is(150.0));
-        assertThat(result.minMeanPrice(), is(60.0));
-        assertThat(result.maxMeanPrice(), is(180.0));
-        assertThat(result.averageMeanPrice(), is(120.0));
+        assertThat(result.meanPrice(), is(120.0));
         assertThat(result.totalStock(), is(1000L));
         assertThat(result.totalDemand(), is(500L));
         assertThat(result.totalStations(), is(10));
@@ -114,8 +110,6 @@ class MybatisCommodityMarketInfoEntityMapperTest {
                 200.0,
                 100.0,
                 150.0,
-                60.0,
-                180.0,
                 120.0,
                 1000L,
                 500L,
@@ -143,9 +137,7 @@ class MybatisCommodityMarketInfoEntityMapperTest {
         assertThat(result.getMaxSellPrice(), is(200.0));
         assertThat(result.getMinSellPrice(), is(100.0));
         assertThat(result.getAvgSellPrice(), is(150.0));
-        assertThat(result.getMinMeanPrice(), is(60.0));
-        assertThat(result.getMaxMeanPrice(), is(180.0));
-        assertThat(result.getAverageMeanPrice(), is(120.0));
+        assertThat(result.getMeanPrice(), is(120.0));
         assertThat(result.getTotalStock(), is(1000L));
         assertThat(result.getTotalDemand(), is(500L));
         assertThat(result.getTotalStations(), is(10));

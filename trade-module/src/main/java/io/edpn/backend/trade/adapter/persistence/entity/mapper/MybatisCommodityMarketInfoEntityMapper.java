@@ -19,9 +19,7 @@ public class MybatisCommodityMarketInfoEntityMapper {
                 mybatisCommodityMarketInfoEntity.getMaxSellPrice(),
                 mybatisCommodityMarketInfoEntity.getMinSellPrice(),
                 mybatisCommodityMarketInfoEntity.getAvgSellPrice(),
-                mybatisCommodityMarketInfoEntity.getMinMeanPrice(),
-                mybatisCommodityMarketInfoEntity.getMaxMeanPrice(),
-                mybatisCommodityMarketInfoEntity.getAverageMeanPrice(),
+                mybatisCommodityMarketInfoEntity.getMeanPrice(),
                 mybatisCommodityMarketInfoEntity.getTotalStock(),
                 mybatisCommodityMarketInfoEntity.getTotalDemand(),
                 mybatisCommodityMarketInfoEntity.getTotalStations(),
@@ -43,9 +41,7 @@ public class MybatisCommodityMarketInfoEntityMapper {
                 .maxSellPrice(commodityMarketInfo.maxSellPrice())
                 .minSellPrice(commodityMarketInfo.minSellPrice())
                 .avgSellPrice(commodityMarketInfo.avgSellPrice())
-                .minMeanPrice(commodityMarketInfo.minMeanPrice())
-                .maxMeanPrice(commodityMarketInfo.maxMeanPrice())
-                .averageMeanPrice(commodityMarketInfo.averageMeanPrice())
+                .meanPrice(commodityMarketInfo.meanPrice())
                 .totalStock(commodityMarketInfo.totalStock())
                 .totalDemand(commodityMarketInfo.totalDemand())
                 .totalStations(commodityMarketInfo.totalStations())

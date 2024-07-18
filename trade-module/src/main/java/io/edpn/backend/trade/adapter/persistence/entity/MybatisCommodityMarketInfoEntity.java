@@ -22,9 +22,7 @@ public class MybatisCommodityMarketInfoEntity {
     private Double maxSellPrice;
     private Double minSellPrice;
     private Double avgSellPrice;
-    private Double minMeanPrice;
-    private Double maxMeanPrice;
-    private Double averageMeanPrice;
+    private Double meanPrice;
     private Long totalStock;
     private Long totalDemand;
     private Integer totalStations;

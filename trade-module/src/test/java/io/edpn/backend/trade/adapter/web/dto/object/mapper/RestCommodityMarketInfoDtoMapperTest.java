@@ -50,8 +50,6 @@ class RestCommodityMarketInfoDtoMapperTest {
                 200.0,
                 100.0,
                 150.0,
-                60.0,
-                180.0,
                 120.0,
                 1000L,
                 500L,
@@ -77,9 +75,7 @@ class RestCommodityMarketInfoDtoMapperTest {
         assertThat(dto.maxSellPrice(), is(200.0));
         assertThat(dto.minSellPrice(), is(100.0));
         assertThat(dto.avgSellPrice(), is(150.0));
-        assertThat(dto.minMeanPrice(), is(60.0));
-        assertThat(dto.maxMeanPrice(), is(180.0));
-        assertThat(dto.averageMeanPrice(), is(120.0));
+        assertThat(dto.meanPrice(), is(120.0));
         assertThat(dto.totalStock(), is(1000L));
         assertThat(dto.totalDemand(), is(500L));
         assertThat(dto.totalStations(), is(10));
